@@ -48,8 +48,11 @@ assert res_user.status_code == 200
 print(f"✓ Step 2: Farmer Profile Loaded -> Location: {res_user.json()['location']}")
 
 # Step 3: FARM HEALTH SCORE & 4: RISK FACTORS & 5: RECOMMENDATIONS
-res_health = client.get(f"/api/farm-health/risk?user_id={logged_in_user['id']}&location=Guntur")
-assert res_health.status_code == 200
+res_health = client.get(
+    f"/api/farm-health/risk?user_id={logged_in_user['id']}&location=Guntur",
+    headers={"X-User-ID": str(logged_in_user['id'])}
+)
+assert res_health.status_code == 200, f"Farm health returned {res_health.status_code}: {res_health.text}"
 h_data = res_health.json()
 assert 0 <= h_data['score'] <= 100
 assert h_data['risk_level'] in ['LOW', 'MODERATE', 'HIGH', 'CRITICAL']

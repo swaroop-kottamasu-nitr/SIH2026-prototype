@@ -38,10 +38,12 @@ function Dashboard({ user, onLogout, onUserUpdate }) {
       const encodedLoc = encodeURIComponent(loc)
 
       try {
-        // Parallel requests for fast, synchronous rendering
+        const userId = user?.id || 1
         const [healthRes, alertsRes, weatherRes, marketRes] = await Promise.allSettled([
-          axios.get(`/api/farm-health/risk?user_id=${user?.id || 1}&location=${encodedLoc}`),
-          axios.get(`/api/weather/alerts/user/${user?.id || 1}?unread_only=true&limit=3`),
+          axios.get(`/api/farm-health/risk?user_id=${userId}&location=${encodedLoc}`, {
+            headers: { 'X-User-ID': String(userId) }
+          }),
+          axios.get(`/api/weather/alerts/user/${userId}?unread_only=true&limit=3`),
           axios.post('/api/weather/current', { location: loc }),
           axios.post('/api/market/season-prices', { location: loc })
         ])
