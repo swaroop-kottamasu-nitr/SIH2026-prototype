@@ -109,12 +109,20 @@ def get_gemini_response(prompt: str, temperature: float = 0.7, use_cache: bool =
 
         print("[API] Gemini request")
         try:
-            # Match reference: client.models.generate_content(model="gemini-2.5-flash", contents=prompt)
-            response = client.models.generate_content(
-                model="gemini-2.5-flash",
-                contents=prompt,
-                config=types.GenerateContentConfig(temperature=temperature),
-            )
+            # Try gemini-2.0-flash with fallback to gemini-1.5-flash
+            model_to_use = "gemini-2.0-flash"
+            try:
+                response = client.models.generate_content(
+                    model=model_to_use,
+                    contents=prompt,
+                    config=types.GenerateContentConfig(temperature=temperature),
+                )
+            except Exception:
+                response = client.models.generate_content(
+                    model="gemini-1.5-flash",
+                    contents=prompt,
+                    config=types.GenerateContentConfig(temperature=temperature),
+                )
             result = response.text.strip() if response.text else ""
 
             if use_cache:

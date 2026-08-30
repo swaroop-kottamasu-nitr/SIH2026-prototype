@@ -96,18 +96,14 @@ def request_otp(request: LoginRequest, db: Session = Depends(get_db)):
         "method": request.method,
         "result": result
     }
-    # In mock mode, include OTP in response so user can see it on login page (dev only)
-    if result.get("status") == "mock" and result.get("message"):
-        if "OTP:" in result.get("message", ""):
-            import re
-            match = re.search(r"OTP:\s*(\d+)", result["message"])
-            if match:
-                response["otp"] = match.group(1)
-        if result.get("plain_content"):
-            import re
-            match = re.search(r"OTP is:\s*(\d+)", result.get("plain_content", ""))
-            if match:
-                response["otp"] = match.group(1)
+    # In mock mode, include OTP in response so user can see it on login page (dev/demo only)
+    inner_res = result.get("result", {}) if isinstance(result.get("result"), dict) else {}
+    if result.get("status") == "mock" or inner_res.get("status") == "mock":
+        combined_text = f"{result.get('message', '')} {inner_res.get('message', '')} {inner_res.get('plain_content', '')}"
+        import re
+        match = re.search(r"OTP(?:\s*is)?:\s*(\d+)", combined_text)
+        if match:
+            response["otp"] = match.group(1)
     return response
 
 @router.post("/login/verify-otp", response_model=UserResponse)

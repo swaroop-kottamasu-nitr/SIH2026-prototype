@@ -36,6 +36,8 @@ async def detect_crop_disease(
     try:
         # Read image bytes
         image_bytes = await image.read()
+        if len(image_bytes) > 15 * 1024 * 1024:
+            raise HTTPException(status_code=400, detail="Image size exceeds maximum limit of 15MB")
         
         # Detect disease using pretrained model
         detection_result = detect_disease(image_bytes)

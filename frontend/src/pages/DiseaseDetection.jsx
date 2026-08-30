@@ -43,7 +43,7 @@ function DiseaseDetection({ user, onLogout, onUserUpdate }) {
       const res = await axios.post('/api/disease/detect', fd, { headers: { 'Content-Type': 'multipart/form-data' } })
       setResult(res.data)
     } catch (err) {
-      setError(err.response?.data?.detail || 'Analysis failed.')
+      setError(err.response?.data?.message || err.response?.data?.detail || 'Analysis failed. Please try again.')
     } finally {
       setLoading(false)
     }

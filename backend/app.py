@@ -4,7 +4,7 @@ from database import init_db
 from config import get_settings
 
 # Import routes
-from routes import auth, disease_detection, soil_analysis, crop_recommendation, weather, market_prices
+from routes import auth, disease_detection, soil_analysis, crop_recommendation, weather, market_prices, farm_health
 
 settings = get_settings()
 
@@ -45,6 +45,7 @@ app.include_router(soil_analysis.router)
 app.include_router(crop_recommendation.router)
 app.include_router(weather.router)
 app.include_router(market_prices.router)
+app.include_router(farm_health.router)
 
 # Root endpoint
 @app.get("/")
