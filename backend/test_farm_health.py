@@ -60,8 +60,8 @@ if not crop:
 
 db.close()
 
-# 1. Test GET farm risk for user
-r1 = client.get('/api/farm-health/risk?user_id=1&location=Guntur')
+# 1. Test GET farm risk for user (Authenticated)
+r1 = client.get('/api/farm-health/risk?user_id=1&location=Guntur', headers={'X-User-ID': '1'})
 print('=== 1. USER FARM HEALTH RISK (GET) ===')
 print('Status:', r1.status_code)
 d1 = r1.json()
@@ -87,8 +87,8 @@ d2 = r2.json()
 print('Score:', d2['score'], '/ 100 -- Level:', d2['risk_level'])
 assert r2.status_code == 200
 
-# 3. Test POST farm risk
-r3 = client.post('/api/farm-health/risk', json={'user_id': 1, 'location': 'Kurnool'})
+# 3. Test POST farm risk (Authenticated)
+r3 = client.post('/api/farm-health/risk', json={'user_id': 1, 'location': 'Kurnool'}, headers={'X-User-ID': '1'})
 print('\n=== 3. POST FARM HEALTH RISK ===')
 print('Status:', r3.status_code)
 d3 = r3.json()
