@@ -105,6 +105,14 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  caret-color: transparent;
+}
+
+input,
+textarea,
+[contenteditable="true"],
+[contenteditable="true"] * {
+  caret-color: auto;
 }
 
 html {
