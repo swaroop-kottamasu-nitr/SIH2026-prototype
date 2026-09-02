@@ -44,7 +44,11 @@
     "soil": "જમીન ચકાસણી",
     "crop": "પાક ભલામણ",
     "more": "વધુ",
-    "tools": "સાધનો"
+    "tools": "સાધનો",
+    "irrigation": "પિયત સમયપત્રક",
+    "crop_rotation": "પાક ફેરબદલી આયોજન",
+    "inputs": "બિયારણ અને ખાતર કેન્દ્રો",
+    "storage": "કોલ્ડ સ્ટોરેજ અને ગોડાઉન"
   },
   "landing": {
     "title": "AI-આધારિત સ્માર્ટ કૃષિ બુદ્ધિમત્તા",
@@ -407,8 +411,8 @@
     }
   },
   "market": {
-    "title": "લાઇવ મંડી બજાર ભાવ",
-    "market": "મંડી બજાર",
+    "title": "બજાર અને યાર્ડ ભાવો",
+    "market": "માર્કેટિંગ યાર્ડ",
     "marketPrice": "બજાર ભાવ",
     "mandiPrice": "મંડી ભાવ",
     "priceTrend": "ભાવ વલણ",
@@ -432,7 +436,21 @@
       "stable": "સ્થિર (→)",
       "up": "વધારો (↑)",
       "down": "ઘટાડો (↓)"
-    }
+    },
+    "crop": "પાક",
+    "price": "ચાલુ ભાવ",
+    "trend": "વલણ",
+    "price_change": "ભાવ ફેરફાર",
+    "last_updated": "છેલ્લું અપડેટ",
+    "data_source": "માહિતી સ્રોત",
+    "live_badge": "લાઈવ બજાર માહિતી",
+    "sample_badge": "નમૂના બજાર માહિતી",
+    "compare": {
+      "title": "યાર્ડ ભાવ સરખામણી",
+      "decision_summary": "નિર્ણય સહાયક સારાંશ",
+      "disclaimer": "ભાવ માત્ર સંદર્ભ માટે છે. વેચાણ સમયે વાસ્તવિક ભાવ બદલાઈ શકે છે."
+    },
+    "askAiBtn": "બજાર ભાવ અંગે AgriDarshak ને પૂછો"
   },
   "advisory": {
     "aiAdvisory": "AI કૃષિ સલાહ",
@@ -587,5 +605,77 @@
     "speaking": "સલાહ સંભળાઈ રહી છે...",
     "odiaVoiceNotice": "પ્રાદેશિક અવાજ એન્જિન દ્વારા ઑડિયો પ્રસ્તુત",
     "voiceUnavailable": "આ બ્રાઉઝરમાં વૉઇસ ઉપલબ્ધ નથી"
+  },
+  "irrigation": {
+    "title": "સ્માર્ટ પિયત સમયપત્રક",
+    "subtitle": "પાકની વૃદ્ધિ અવસ્થા અને હવામાન આગાહી આધારિત ચોક્કસ પિયત સમય",
+    "fieldParams": "ખેતર વિગતો",
+    "standingCrop": "ઊભો પાક",
+    "growthStage": "વૃદ્ધિ તબક્કો",
+    "soilType": "જમીનનો પ્રકાર",
+    "farmLocation": "ખેતરનું સ્થળ",
+    "calculateBtn": "💧 યોગ્ય પિયત સમય ગણો",
+    "next_window": "ભલામણ કરેલ પિયત સમય",
+    "priority": "પ્રાથમિકતા",
+    "reason": "કૃષિ કારણ",
+    "benefit": "અપેક્ષિત લાભ",
+    "weather_factor": "હવામાન સ્થિતિ",
+    "data_available": "ઉપયોગમાં લીધેલ માહિતી:",
+    "askAiBtn": "આ ભલામણ વિશે AgriDarshak AI ને પૂછો",
+    "emptyPrompt": "પિયત સમયપત્રક માટે પાકની વિગતો પસંદ કરો."
+  },
+  "crop_rotation": {
+    "title": "પાક ફેરબદલી આયોજન",
+    "subtitle": "જમીનની ફળદ્રુપતા વધારવા અને જીવાત નિયંત્રણ માટે વૈજ્ઞાનિક પાક ફેરબદલી",
+    "setupTitle": "પાકનો ઇતિહાસ",
+    "prevCrop": "અગાઉનો પાક",
+    "targetSeason": "આગામી ઋતુ",
+    "soilType": "જમીનનો પ્રકાર",
+    "cropHistoryLabel": "અગાઉ વાવેલા પાકો",
+    "generateBtn": "🌾 પાક ફેરબદલી પ્લાન બનાવો",
+    "recommended_crop": "શ્રેષ્ઠ અનુગામી પાકો",
+    "reason": "કૃષિ તર્ક",
+    "soil_benefit": "જમીન ફળદ્રુપતા લાભ",
+    "pest_break": "જીવાત નિયંત્રણ લાભ",
+    "season_suitability": "ઋતુ અનુકૂળતા",
+    "confidence": "વિશ્વાસપાત્રતા",
+    "emptyPrompt": "પાક ફેરબદલી ભલામણો માટે અગાઉનો પાક પસંદ કરો."
+  },
+  "input": {
+    "title": "કૃષિ ઇનપુટ કેન્દ્ર શોધક",
+    "subtitle": "પ્રમાણિત બિયારણ, ખાતર અને ટપક સિંચાઈ સાધનોના વિક્રેતા શોધો",
+    "category": "કેટેગરી",
+    "category_seeds": "પ્રમાણિત બિયારણ",
+    "category_fertilizers": "ખાતરો અને પોષક તત્ત્વો",
+    "category_pesticides": "જંતુનાશકો",
+    "category_equipment": "મશીનરી અને સિંચાઈ",
+    "category_other": "અન્ય",
+    "location": "સ્થળ / જિલ્લો",
+    "search": "શોધો",
+    "verified_badge": "સરકારી ચકાસાયેલ",
+    "demo_badge": "ડેમો ડાયરેક્ટરી",
+    "contact": "સંપર્ક",
+    "address": "સરનામું",
+    "askAiBtn": "ગુણવત્તા અંગે AgriDarshak ને પૂછો"
+  },
+  "storage": {
+    "title": "સંગ્રહ વ્યવસ્થા શોધક",
+    "subtitle": "નજીકના વેરહાઉસ, કોલ્ડ સ્ટોરેજ અને અનાજના ગોડાઉન શોધો",
+    "crop": "પાક",
+    "quantity": "જથ્થો (ક્વિન્ટલ)",
+    "facility_name": "કેન્દ્રનું નામ",
+    "type": "પ્રકાર",
+    "capacity": "ક્ષમતા",
+    "capacity_unknown": "ક્ષમતા: દર્શાવેલ નથી",
+    "availability_needs_confirmation": "જગ્યાની પુષ્ટિ જરૂરી છે",
+    "contact": "ફોન",
+    "distance": "અંતર",
+    "demo_badge": "ડેમો ડાયરેક્ટરી",
+    "askAiBtn": "કોલ્ડ સ્ટોરેજ સાચવણી અંગે AgriDarshak ને પૂછો"
+  },
+  "trend": {
+    "up": "વધારો",
+    "down": "ઘટાડો",
+    "stable": "સ્થિર"
   }
 }

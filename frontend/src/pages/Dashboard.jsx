@@ -897,9 +897,17 @@ function Dashboard({ user, onLogout, onUserUpdate }) {
                 <p className="domain-summary-text">
                   {t('dashboard.cropRecommendationDesc')}
                 </p>
-                <Link to="/crop-recommendation" className="btn btn-domain-action">
-                  🌾 {t('dashboard.cropRecommendation')} →
-                </Link>
+                <div className="domain-btn-dual">
+                  <Link to="/crop-recommendation" className="btn btn-domain-action">
+                    🌾 {t('dashboard.cropRecommendation')}
+                  </Link>
+                  <Link to="/irrigation" className="btn btn-domain-action-subtle">
+                    💧 {t('irrigation.title', { defaultValue: 'Irrigation' })}
+                  </Link>
+                  <Link to="/crop-rotation" className="btn btn-domain-action-subtle">
+                    🔄 {t('crop_rotation.title', { defaultValue: 'Rotation' })}
+                  </Link>
+                </div>
               </div>
 
               {/* 9. MARKET CARD */}
@@ -933,9 +941,17 @@ function Dashboard({ user, onLogout, onUserUpdate }) {
                     </div>
                   ))}
                 </div>
-                <Link to="/market-prices" className="btn btn-domain-action">
-                  📈 {t('dashboard.marketPrices')} →
-                </Link>
+                <div className="domain-btn-dual">
+                  <Link to="/market-prices" className="btn btn-domain-action">
+                    📈 {t('dashboard.marketPrices')}
+                  </Link>
+                  <Link to="/inputs" className="btn btn-domain-action-subtle">
+                    🛍️ {t('input.title', { defaultValue: 'Inputs' })}
+                  </Link>
+                  <Link to="/storage" className="btn btn-domain-action-subtle">
+                    🏢 {t('storage.title', { defaultValue: 'Storage' })}
+                  </Link>
+                </div>
               </div>
 
             </div>

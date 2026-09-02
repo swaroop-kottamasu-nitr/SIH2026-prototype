@@ -44,7 +44,11 @@
     "soil": "माती परीक्षण",
     "crop": "पीक सल्ला",
     "more": "अधिक",
-    "tools": "साधने"
+    "tools": "साधने",
+    "irrigation": "सिंचन वेळापत्रक",
+    "crop_rotation": "पीक फेरपालट नियोजन",
+    "inputs": "बियाणे व खते केंद्र",
+    "storage": "कोल्ड स्टोरेज व गोदाम"
   },
   "landing": {
     "title": "AI-सक्षम स्मार्ट कृषी बुद्धिमत्ता",
@@ -407,8 +411,8 @@
     }
   },
   "market": {
-    "title": "थेट कृषी बाजार भाव",
-    "market": "बाजार समिती",
+    "title": "बाजार व मंडी भाव",
+    "market": "बाजार समिती / मंडी",
     "marketPrice": "बाजार भाव",
     "mandiPrice": "मंडी दर",
     "priceTrend": "किमतींचा कल",
@@ -432,7 +436,21 @@
       "stable": "स्थिर (→)",
       "up": "वाढ (↑)",
       "down": "घट (↓)"
-    }
+    },
+    "crop": "पीक",
+    "price": "चालू भाव",
+    "trend": "कल",
+    "price_change": "दर बदल",
+    "last_updated": "शेवटचे अपडेट",
+    "data_source": "डेटा स्रोत",
+    "live_badge": "थेट बाजार डेटा",
+    "sample_badge": "नमुना बाजार डेटा",
+    "compare": {
+      "title": "बाजार भाव तुलना",
+      "decision_summary": "निर्णय सहाय्यक सारांश",
+      "disclaimer": "हे दर केवळ माहितीसाठी आहेत. प्रत्यक्ष विक्रीच्या वेळी दर बदलू शकतात."
+    },
+    "askAiBtn": "बाजार भाव व विक्रीच्या वेळेबाबत AgriDarshak ला विचारा"
   },
   "advisory": {
     "aiAdvisory": "AI कृषी सल्ला",
@@ -587,5 +605,77 @@
     "speaking": "सल्ला वाचला जात आहे...",
     "odiaVoiceNotice": "प्रादेशिक व्हॉइस इंजिनद्वारे ऑडिओ सादर",
     "voiceUnavailable": "या ब्राउझरमध्ये व्हॉइस उपलब्ध नाही"
+  },
+  "irrigation": {
+    "title": "स्मार्ट सिंचन वेळापत्रक",
+    "subtitle": "पीक वाढीची अवस्था आणि हवामान अंदाजावर आधारित अचूक सिंचन वेळ",
+    "fieldParams": "शेताचे तपशील",
+    "standingCrop": "उभे पीक",
+    "growthStage": "वाढीची अवस्था",
+    "soilType": "मातीचा प्रकार",
+    "farmLocation": "शेताचे ठिकाण",
+    "calculateBtn": "💧 योग्य सिंचन वेळ काढा",
+    "next_window": "शिफारस केलेली सिंचन वेळ",
+    "priority": "प्राधान्यता",
+    "reason": "कृषी शास्त्रीय कारण",
+    "benefit": "अपेक्षित फायदा",
+    "weather_factor": "हवामान स्थिती",
+    "data_available": "वापरलेले डेटा स्रोत:",
+    "askAiBtn": "या शिफारशीबद्दल AgriDarshak AI ला विचारा",
+    "emptyPrompt": "सिंचन वेळापत्रकासाठी पीक तपशील निवडा."
+  },
+  "crop_rotation": {
+    "title": "पीक फेरपालट नियोजन",
+    "subtitle": "जमिनीची सुपीकता टिकवण्यासाठी आणि कीड नियंत्रण करण्यासाठी शास्त्रीय फेरपालट",
+    "setupTitle": "मागील पिकांचा इतिहास",
+    "prevCrop": "मागील / चालू पीक",
+    "targetSeason": "पुढील हंगામ",
+    "soilType": "मातीचा प्रकार",
+    "cropHistoryLabel": "पूर्वी घेतलेली पिके",
+    "generateBtn": "🌾 फेरपालट योजना तयार करा",
+    "recommended_crop": "उत्कृष्ट पुढील पिके",
+    "reason": "कृषी शास्त्रीय कारण",
+    "soil_benefit": "जमीन सुपीकता फायदा",
+    "pest_break": "कीड व रोग नियंत्रण",
+    "season_suitability": "हंगाम अनुकूलता",
+    "confidence": "विश्वासार्हता",
+    "emptyPrompt": "पीक फेरपालट शिफारशींसाठी मागील पीक निवडा."
+  },
+  "input": {
+    "title": "कृषी निविष्ठा केंद्र शोधक",
+    "subtitle": "प्रमाणित बियाणे, खते आणि ठिबक सिंचन उपकरणे विक्रेते शोधा",
+    "category": "प्रवर्ग",
+    "category_seeds": "प्रमाणित बियाणे",
+    "category_fertilizers": "खते व पोषण",
+    "category_pesticides": "कीटकनाशके",
+    "category_equipment": "यंत्रसामग्री व सिंचन",
+    "category_other": "इतर",
+    "location": "स्थान / जिल्हा",
+    "search": "शोधा",
+    "verified_badge": "शासकीय / पॅक्स प्रमाणित",
+    "demo_badge": "डेमो डायरेक्टरी",
+    "contact": "संपर्क",
+    "address": "पत्ता",
+    "askAiBtn": "निविष्ठा गुणवत्तेबाबत AgriDarshak ला विचारा"
+  },
+  "storage": {
+    "title": "कापणीपश्चात साठवणूक केंद्र शोधक",
+    "subtitle": "जवळचे शासकीय गोदाम, कोल्ड स्टोरेज आणि सायलो शोधा",
+    "crop": "पीक",
+    "quantity": "अंदाजे प्रमाण (क्विंटल)",
+    "facility_name": "केंद्राचे नाव",
+    "type": "प्रकार",
+    "capacity": "क्षमता",
+    "capacity_unknown": "क्षमता: अनिर्दिष्ट",
+    "availability_needs_confirmation": "जागेची खात्री आवश्यक आहे",
+    "contact": "फोन",
+    "distance": "अंतर",
+    "demo_badge": "डेमो डायरेक्टरी",
+    "askAiBtn": "साठवणूक पद्धतीबाबत AgriDarshak ला विचारा"
+  },
+  "trend": {
+    "up": "वाढ",
+    "down": "घट",
+    "stable": "स्थिर"
   }
 }

@@ -12,6 +12,10 @@ import Weather from './pages/Weather'
 import DiseaseDetection from './pages/DiseaseDetection'
 import SoilTypeDetection from './pages/SoilTypeDetection'
 import MarketPrices from './pages/MarketPrices'
+import Irrigation from './pages/Irrigation'
+import CropRotation from './pages/CropRotation'
+import InputLocator from './pages/InputLocator'
+import StorageLocator from './pages/StorageLocator'
 import AlertDetail from './pages/AlertDetail'
 import AlertBanner from './components/AlertBanner'
 
@@ -81,6 +85,38 @@ function App() {
                 <Route
                     path="/market-prices"
                     element={user ? <MarketPrices user={user} onLogout={handleLogout} onUserUpdate={handleLogin} /> : <Navigate to="/login" />}
+                />
+                <Route
+                    path="/irrigation"
+                    element={user ? <Irrigation user={user} onLogout={handleLogout} onUserUpdate={handleLogin} /> : <Navigate to="/login" />}
+                />
+                <Route
+                    path="/dashboard/irrigation"
+                    element={user ? <Irrigation user={user} onLogout={handleLogout} onUserUpdate={handleLogin} /> : <Navigate to="/login" />}
+                />
+                <Route
+                    path="/crop-rotation"
+                    element={user ? <CropRotation user={user} onLogout={handleLogout} onUserUpdate={handleLogin} /> : <Navigate to="/login" />}
+                />
+                <Route
+                    path="/dashboard/crop-rotation"
+                    element={user ? <CropRotation user={user} onLogout={handleLogout} onUserUpdate={handleLogin} /> : <Navigate to="/login" />}
+                />
+                <Route
+                    path="/inputs"
+                    element={user ? <InputLocator user={user} onLogout={handleLogout} onUserUpdate={handleLogin} /> : <Navigate to="/login" />}
+                />
+                <Route
+                    path="/dashboard/inputs"
+                    element={user ? <InputLocator user={user} onLogout={handleLogout} onUserUpdate={handleLogin} /> : <Navigate to="/login" />}
+                />
+                <Route
+                    path="/storage"
+                    element={user ? <StorageLocator user={user} onLogout={handleLogout} onUserUpdate={handleLogin} /> : <Navigate to="/login" />}
+                />
+                <Route
+                    path="/dashboard/storage"
+                    element={user ? <StorageLocator user={user} onLogout={handleLogout} onUserUpdate={handleLogin} /> : <Navigate to="/login" />}
                 />
                 <Route path="/alert/:id" element={user ? <AlertDetail user={user} onLogout={handleLogout} onUserUpdate={handleLogin} /> : <Navigate to="/login" />} />
             </Routes>

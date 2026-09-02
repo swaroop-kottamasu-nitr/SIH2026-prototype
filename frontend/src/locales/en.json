@@ -44,7 +44,11 @@
     "soil": "Soil Analysis",
     "crop": "Crop Advisory",
     "more": "More",
-    "tools": "Tools"
+    "tools": "Tools",
+    "irrigation": "Precision Water Windows",
+    "crop_rotation": "Pest Break & Soil Vitality",
+    "inputs": "Certified Seeds & Bio-Inputs",
+    "storage": "Cold Chains & Warehouses"
   },
   "landing": {
     "title": "AI-Powered Agricultural Intelligence",
@@ -407,8 +411,8 @@
     }
   },
   "market": {
-    "title": "Live Mandi Market Prices",
-    "market": "Mandi Market",
+    "title": "Live Mandi & Market Prices",
+    "market": "Mandi / Yard",
     "marketPrice": "Market Price",
     "mandiPrice": "Mandi Price",
     "priceTrend": "Price Trend",
@@ -432,7 +436,21 @@
       "stable": "Stable (→)",
       "up": "UP (↑)",
       "down": "DOWN (↓)"
-    }
+    },
+    "crop": "Crop",
+    "price": "Prevailing Price",
+    "trend": "Trend",
+    "price_change": "Price Change",
+    "last_updated": "Last Updated",
+    "data_source": "Data Source",
+    "live_badge": "LIVE MARKET DATA",
+    "sample_badge": "SAMPLE MARKET DATA",
+    "compare": {
+      "title": "Mandi Price Comparison",
+      "decision_summary": "Decision Support Summary",
+      "disclaimer": "Prices are for reference. Actual prices may vary at sale."
+    },
+    "askAiBtn": "Ask AgriDarshak about market prices & selling timing"
   },
   "advisory": {
     "aiAdvisory": "AI Agronomic Advisory",
@@ -587,5 +605,77 @@
     "speaking": "Speaking Advisory...",
     "odiaVoiceNotice": "Odia audio synthesized using regional speech engine",
     "voiceUnavailable": "Voice synthesis is not supported in this browser"
+  },
+  "irrigation": {
+    "title": "Irrigation Scheduler",
+    "subtitle": "Precision water delivery windows aligned with growth stages and live meteorological forecasts",
+    "fieldParams": "Field Parameters",
+    "standingCrop": "Standing Crop",
+    "growthStage": "Growth Stage",
+    "soilType": "Soil Type",
+    "farmLocation": "Farm Location",
+    "calculateBtn": "💧 Calculate Optimal Window",
+    "next_window": "Recommended Irrigation Window",
+    "priority": "PRIORITY",
+    "reason": "Agronomic Justification",
+    "benefit": "Expected Benefit",
+    "weather_factor": "Weather & Forecast Condition",
+    "data_available": "Telemetry & Forecast Sources Used:",
+    "askAiBtn": "Ask AgriDarshak AI about this recommendation",
+    "emptyPrompt": "Select crop parameters to generate precision irrigation schedule."
+  },
+  "crop_rotation": {
+    "title": "Crop Rotation Planner",
+    "subtitle": "Scientifically designed rotation cycles to break pest vectors, fix soil nitrogen, and sustain yield vitality",
+    "setupTitle": "Field & Cropping History",
+    "prevCrop": "Preceding / Current Standing Crop",
+    "targetSeason": "Next Sowing Season",
+    "soilType": "Soil Type",
+    "cropHistoryLabel": "Past Crops Grown in Field (Unlocks High Confidence)",
+    "generateBtn": "🌾 Generate Rotation Plan",
+    "recommended_crop": "Optimal Successor Crops",
+    "reason": "Agronomic Rationale",
+    "soil_benefit": "Soil Health & Fertility Impact",
+    "pest_break": "Pest & Pathogen Break",
+    "season_suitability": "Suitability",
+    "confidence": "Confidence",
+    "emptyPrompt": "Configure your previous crop and target season to generate rotation recommendations."
+  },
+  "input": {
+    "title": "Agricultural Input Locator",
+    "subtitle": "Locate certified seed hubs, cooperative fertilizer outlets, and micro-irrigation dealers",
+    "category": "Input Category",
+    "category_seeds": "Certified Seeds",
+    "category_fertilizers": "Fertilizers & Nutrients",
+    "category_pesticides": "Bio-Pesticides & Crop Protection",
+    "category_equipment": "Machinery & Micro-Irrigation",
+    "category_other": "Nursery & Soil Test Units",
+    "location": "Location / District",
+    "search": "Search Suppliers",
+    "verified_badge": "Govt / PACS Verified",
+    "demo_badge": "DEMO DIRECTORY",
+    "contact": "Contact Phone",
+    "address": "Address / Hub",
+    "askAiBtn": "Ask AgriDarshak about input quality, dosages & certified brands"
+  },
+  "storage": {
+    "title": "Post-Harvest Storage Locator",
+    "subtitle": "Locate nearby State Warehousing godowns, multi-chamber cold chains, and APMC silos",
+    "crop": "Commodity / Crop",
+    "quantity": "Estimated Quantity (Quintals)",
+    "facility_name": "Facility Name",
+    "type": "Facility Type",
+    "capacity": "Capacity",
+    "capacity_unknown": "Capacity: Not specified",
+    "availability_needs_confirmation": "Availability needs confirmation",
+    "contact": "Contact Phone",
+    "distance": "Distance",
+    "demo_badge": "DEMO DIRECTORY",
+    "askAiBtn": "Ask AgriDarshak about storage temperature, moisture control & warehousing loans"
+  },
+  "trend": {
+    "up": "UP",
+    "down": "DOWN",
+    "stable": "STABLE"
   }
 }

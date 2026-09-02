@@ -49,7 +49,7 @@ function AppLayout({ children, user, onLogout, onUserUpdate }) {
     return location.pathname.startsWith(path)
   }
 
-  const isToolsActive = ['/disease-detection', '/soil-analysis', '/crop-recommendation'].some(p => location.pathname.startsWith(p))
+  const isToolsActive = ['/disease-detection', '/soil-analysis', '/crop-recommendation', '/irrigation', '/crop-rotation', '/inputs', '/storage'].some(p => location.pathname.startsWith(p))
 
   return (
     <div className="app-layout">
@@ -143,6 +143,54 @@ function AppLayout({ children, user, onLogout, onUserUpdate }) {
                       <div className="item-text">
                         <span className="item-title">{t('dashboard.cropRecommendation')}</span>
                         <span className="item-sub">{t('nav.crop', { defaultValue: 'Multi-Factor Advisory' })}</span>
+                      </div>
+                    </Link>
+
+                    <Link
+                      to="/irrigation"
+                      className={`dropdown-item ${isActive('/irrigation') ? 'active' : ''}`}
+                      onClick={() => setToolsOpen(false)}
+                    >
+                      <span className="item-icon">💧</span>
+                      <div className="item-text">
+                        <span className="item-title">{t('irrigation.title', { defaultValue: 'Irrigation Scheduler' })}</span>
+                        <span className="item-sub">{t('nav.irrigation', { defaultValue: 'Precision Water Windows' })}</span>
+                      </div>
+                    </Link>
+
+                    <Link
+                      to="/crop-rotation"
+                      className={`dropdown-item ${isActive('/crop-rotation') ? 'active' : ''}`}
+                      onClick={() => setToolsOpen(false)}
+                    >
+                      <span className="item-icon">🔄</span>
+                      <div className="item-text">
+                        <span className="item-title">{t('crop_rotation.title', { defaultValue: 'Crop Rotation Planner' })}</span>
+                        <span className="item-sub">{t('nav.crop_rotation', { defaultValue: 'Pest Break & Soil Vitality' })}</span>
+                      </div>
+                    </Link>
+
+                    <Link
+                      to="/inputs"
+                      className={`dropdown-item ${isActive('/inputs') ? 'active' : ''}`}
+                      onClick={() => setToolsOpen(false)}
+                    >
+                      <span className="item-icon">🛍️</span>
+                      <div className="item-text">
+                        <span className="item-title">{t('input.title', { defaultValue: 'Input Locator' })}</span>
+                        <span className="item-sub">{t('nav.inputs', { defaultValue: 'Certified Seeds & Bio-Inputs' })}</span>
+                      </div>
+                    </Link>
+
+                    <Link
+                      to="/storage"
+                      className={`dropdown-item ${isActive('/storage') ? 'active' : ''}`}
+                      onClick={() => setToolsOpen(false)}
+                    >
+                      <span className="item-icon">🏢</span>
+                      <div className="item-text">
+                        <span className="item-title">{t('storage.title', { defaultValue: 'Storage Locator' })}</span>
+                        <span className="item-sub">{t('nav.storage', { defaultValue: 'Cold Chains & Warehouses' })}</span>
                       </div>
                     </Link>
                   </motion.div>
@@ -247,6 +295,34 @@ function AppLayout({ children, user, onLogout, onUserUpdate }) {
                 onClick={() => setMobileMenuOpen(false)}
               >
                 🌾 {t('dashboard.cropRecommendation')}
+              </Link>
+              <Link
+                to="/irrigation"
+                className={`nav-mobile-link ${isActive('/irrigation') ? 'active' : ''}`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                💧 {t('irrigation.title', { defaultValue: 'Irrigation Scheduler' })}
+              </Link>
+              <Link
+                to="/crop-rotation"
+                className={`nav-mobile-link ${isActive('/crop-rotation') ? 'active' : ''}`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                🔄 {t('crop_rotation.title', { defaultValue: 'Crop Rotation Planner' })}
+              </Link>
+              <Link
+                to="/inputs"
+                className={`nav-mobile-link ${isActive('/inputs') ? 'active' : ''}`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                🛍️ {t('input.title', { defaultValue: 'Input Locator' })}
+              </Link>
+              <Link
+                to="/storage"
+                className={`nav-mobile-link ${isActive('/storage') ? 'active' : ''}`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                🏢 {t('storage.title', { defaultValue: 'Storage Locator' })}
               </Link>
 
               <div className="lang-selector-mobile">
