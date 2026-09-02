@@ -9,6 +9,10 @@ import logging
 from pathlib import Path
 from typing import Tuple, Dict, Optional
 import io
+import random
+import threading
+from PIL import Image
+import numpy as np
 
 from services.leaf_validator import is_leaf_image
 
@@ -18,17 +22,6 @@ logger = logging.getLogger(__name__)
 MODEL_DIR = Path(__file__).parent.parent / "ml_models" / "plant_disease"
 MODEL_PATH = MODEL_DIR / "mobilenetv2_plant.pth"
 CLASS_NAMES_PATH = MODEL_DIR / "class_names.json"
-
-# Try PyTorch imports
-try:
-    import torch
-    from torchvision import models, transforms
-    from PIL import Image
-    import numpy as np
-    TORCH_AVAILABLE = True
-except ImportError:
-    TORCH_AVAILABLE = False
-    print("[DISEASE] PyTorch not installed - pip install torch torchvision")
 
 
 def _load_class_names() -> list:
@@ -65,13 +58,14 @@ class DiseaseDetectionModel:
         self._load_model()
 
     def _load_model(self):
-        """Load PyTorch MobileNetV2 model."""
-        if not TORCH_AVAILABLE:
-            return
+        """Load PyTorch MobileNetV2 model lazily."""
         if not MODEL_PATH.exists():
             print(f"[DISEASE] Model not found at {MODEL_PATH}")
             return
         try:
+            import torch
+            from torchvision import models, transforms
+
             # Build model architecture (same as training - Daksh159/plant-disease-mobilenetv2)
             model = models.mobilenet_v2(weights=None)
             model.classifier[1] = torch.nn.Sequential(
@@ -92,6 +86,9 @@ class DiseaseDetectionModel:
                 transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
             ])
             print("[DISEASE] MobileNetV2 model loaded successfully")
+        except ImportError:
+            print("[DISEASE] PyTorch not installed - pip install torch torchvision")
+            self.model = None
         except Exception as e:
             print(f"[DISEASE] Model load error: {e}")
             self.model = None
@@ -109,10 +106,11 @@ class DiseaseDetectionModel:
         Predict disease from image.
         Returns: (crop_name, disease_name, confidence, all_predictions)
         """
-        if self.model is None:
+        if self.model is None or self.transform is None:
             return self._mock_prediction()
 
         try:
+            import torch
             x = self.preprocess_image(image_bytes)
             with torch.no_grad():
                 logits = self.model(x)
@@ -132,7 +130,6 @@ class DiseaseDetectionModel:
 
     def _mock_prediction(self) -> Tuple[str, str, float, dict]:
         """Fallback when model unavailable."""
-        import random
         idx = random.randint(0, len(self.class_names) - 1) if self.class_names else 0
         full_name = self.class_names[idx] if self.class_names else "Tomato___healthy"
         crop_name, disease_name = _parse_class_name(full_name)
@@ -140,8 +137,6 @@ class DiseaseDetectionModel:
         all_predictions = {self.class_names[i]: (confidence if i == idx else 0.02) for i in range(len(self.class_names))}
         return crop_name, disease_name, confidence, all_predictions
 
-
-import threading
 
 # Thread-safe lazy-loaded singleton instance
 _model_lock = threading.Lock()

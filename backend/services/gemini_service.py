@@ -2,8 +2,6 @@
 Gemini API service - Uses google-genai SDK (matches reference implementation).
 Optimized for FREE tier with strict quota protection.
 """
-from google import genai
-from google.genai import types
 from config import get_settings
 import time
 import hashlib
@@ -32,12 +30,18 @@ def _get_client():
             print("[GEMINI] ERROR: No API key. Set GEMINI_API_KEY in .env")
             return None
         try:
+            from google import genai
+            from google.genai import types
+
             _client = genai.Client(
                 api_key=api_key,
                 http_options=types.HttpOptions(timeout=12000)
             )
             print("[GEMINI] Client initialized successfully")
             return _client
+        except ImportError:
+            print("[GEMINI] google-genai SDK not installed")
+            return None
         except Exception as e:
             print(f"[GEMINI] Failed to create client: {e}")
             return None
@@ -114,6 +118,8 @@ def get_gemini_response(prompt: str, temperature: float = 0.7, use_cache: bool =
         client = _get_client()
         if not client:
             return ("", "fallback") if return_source else ""
+
+        from google.genai import types
 
         # Production model candidates in order of preference
         models_to_try = [
