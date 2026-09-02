@@ -141,8 +141,21 @@ class DiseaseDetectionModel:
         return crop_name, disease_name, confidence, all_predictions
 
 
-# Global instance
-disease_model = DiseaseDetectionModel()
+import threading
+
+# Thread-safe lazy-loaded singleton instance
+_model_lock = threading.Lock()
+_disease_model: Optional[DiseaseDetectionModel] = None
+
+
+def get_disease_model() -> DiseaseDetectionModel:
+    """Get or lazily initialize the DiseaseDetectionModel singleton."""
+    global _disease_model
+    if _disease_model is None:
+        with _model_lock:
+            if _disease_model is None:
+                _disease_model = DiseaseDetectionModel()
+    return _disease_model
 
 
 def detect_disease(image_bytes: bytes) -> dict:
@@ -151,7 +164,7 @@ def detect_disease(image_bytes: bytes) -> dict:
 
     Pipeline:
       1. Leaf validation  — rejects non-leaf / blurry images early
-      2. Disease inference — MobileNetV2 predicts disease class
+      2. Disease inference — MobileNetV2 predicts disease class (lazy-loaded)
 
     Returns dict with:
       Normal path  → crop_name, disease_name, confidence, is_healthy, all_predictions
@@ -184,8 +197,9 @@ def detect_disease(image_bytes: bytes) -> dict:
             "message": str(e)
         }
 
-    # ── Step 3: Disease inference via existing MobileNetV2 model ───────
-    crop_name, disease_name, confidence, all_predictions = disease_model.predict(image_bytes)
+    # ── Step 3: Disease inference via lazy-loaded MobileNetV2 model ────
+    model = get_disease_model()
+    crop_name, disease_name, confidence, all_predictions = model.predict(image_bytes)
     is_healthy = "healthy" in disease_name.lower()
     return {
         "success": True,
