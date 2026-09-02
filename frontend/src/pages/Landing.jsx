@@ -42,7 +42,10 @@ function Landing() {
       <header className="landing-header">
         <div className="container">
           <div className="header-inner">
-            <span className="logo">🌾 {t('brand')}</span>
+            <span className="logo" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+              <img src="/agridarshak-logo.jpeg" alt="AgriDarshak" style={{ width: 28, height: 28, borderRadius: 6, objectFit: 'cover' }} />
+              <span>{t('brand')}</span>
+            </span>
             <nav className="header-nav">
               <select className="lang-select-inline" value={currentLang} onChange={(e) => handleLanguageChange(e.target.value)} aria-label={t('common.language')}>
                 {SUPPORTED_LANGS.map((l) => <option key={l.code} value={l.code}>{l.label}</option>)}

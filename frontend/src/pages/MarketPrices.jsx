@@ -7,7 +7,16 @@ import AppLayout from '../components/AppLayout'
 import { FiArrowLeft } from 'react-icons/fi'
 import './FeaturePage.css'
 
-const POPULAR = ['Rice', 'Chilli', 'Cotton', 'Groundnut', 'Maize', 'Tomato', 'Onion', 'Turmeric']
+const POPULAR = [
+  { name: 'Rice', key: 'rice' },
+  { name: 'Chilli', key: 'chilli' },
+  { name: 'Cotton', key: 'cotton' },
+  { name: 'Groundnut', key: 'groundnut' },
+  { name: 'Maize', key: 'maize' },
+  { name: 'Tomato', key: 'tomato' },
+  { name: 'Onion', key: 'onion' },
+  { name: 'Turmeric', key: 'turmeric' }
+]
 
 function MarketPrices({ user, onLogout, onUserUpdate }) {
   const { t } = useTranslation()
@@ -64,7 +73,7 @@ function MarketPrices({ user, onLogout, onUserUpdate }) {
     setLoading(true)
     axios.get(`/api/market/prices/${encodeURIComponent(n)}`, { params: { location } })
       .then(res => setPrices(res.data))
-      .catch(() => { setPrices(null); alert('No price data found') })
+      .catch(() => { setPrices(null); alert(t('market.noPriceFound')) })
       .finally(() => setLoading(false))
   }
 
@@ -124,11 +133,11 @@ function MarketPrices({ user, onLogout, onUserUpdate }) {
                 <div className="market-grid">
                   {seasonData.crops.map((c, i) => (
                     <div key={i} className="market-card">
-                      <h3>{c.crop_name}</h3>
-                      <div className="market-price">₹{c.latest_price?.toFixed(2) || '—'}/qtl</div>
+                      <h3>{t(`crops.${c.crop_name.toLowerCase().replace(/[^a-z]/g, '')}`, { defaultValue: c.crop_name })}</h3>
+                      <div className="market-price">₹{c.latest_price?.toFixed(2) || '—'}/{t('market.perQuintal')}</div>
                       {c.trend && (
                         <span className={`badge badge-${c.trend}`}>
-                          {c.trend.toUpperCase()} {c.change_percent !== 0 && `(${c.change_percent > 0 ? '+' : ''}${c.change_percent}%)`}
+                          {t(`market.trends.${c.trend.toLowerCase()}`, { defaultValue: c.trend.toUpperCase() })} {c.change_percent !== 0 && `(${c.change_percent > 0 ? '+' : ''}${c.change_percent}%)`}
                         </span>
                       )}
                       <button type="button" className="quick-btn" style={{ marginTop: 'var(--space-2)' }} onClick={() => { setCrop(c.crop_name); search(c.crop_name); }}>
@@ -151,15 +160,15 @@ function MarketPrices({ user, onLogout, onUserUpdate }) {
                   placeholder={t('market.cropPlaceholder')}
                   list="crops"
                 />
-                <datalist id="crops">{POPULAR.map(c => <option key={c} value={c} />)}</datalist>
+                <datalist id="crops">{POPULAR.map(c => <option key={c.name} value={c.name} />)}</datalist>
                 <button type="submit" className="btn btn-primary" disabled={loading}>
                   {loading ? t('common.searching') : t('common.search')}
                 </button>
               </form>
               <div className="quick-links">
                 {POPULAR.map(c => (
-                  <button key={c} type="button" className="quick-btn" onClick={() => { setCrop(c); search(c); }}>
-                    {c}
+                  <button key={c.name} type="button" className="quick-btn" onClick={() => { setCrop(c.name); search(c.name); }}>
+                    {t(`crops.${c.key}`, { defaultValue: c.name })}
                   </button>
                 ))}
               </div>
@@ -168,14 +177,14 @@ function MarketPrices({ user, onLogout, onUserUpdate }) {
             {prices && (
               <motion.div className="result-card" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
                 <div className="result-header">
-                  <h2>{prices.crop_name}</h2>
+                  <h2>{t(`crops.${prices.crop_name.toLowerCase().replace(/[^a-z]/g, '')}`, { defaultValue: prices.crop_name })}</h2>
                   {prices.latest_price && (
-                    <span className="param-value">₹{prices.latest_price.toFixed(2)}/quintal</span>
+                    <span className="param-value">₹{prices.latest_price.toFixed(2)} / {t('market.perQuintal')}</span>
                   )}
                 </div>
                 {prices.trend && (
                   <div className={`alert ${prices.trend === 'up' ? 'alert-success' : prices.trend === 'down' ? 'alert-danger' : 'alert-info'}`} style={{ marginBottom: 'var(--space-4)' }}>
-                    {prices.trend.toUpperCase()} {prices.change_percent !== 0 && `(${prices.change_percent > 0 ? '+' : ''}${prices.change_percent.toFixed(1)}%)`}
+                    {t(`market.trends.${prices.trend.toLowerCase()}`, { defaultValue: prices.trend.toUpperCase() })} {prices.change_percent !== 0 && `(${prices.change_percent > 0 ? '+' : ''}${prices.change_percent.toFixed(1)}%)`}
                   </div>
                 )}
                 <h3 style={{ marginBottom: 'var(--space-4)' }}>{t('market.recentPrices')}</h3>

@@ -59,7 +59,7 @@ function AlertBanner({ user }) {
               </div>
               <div className="alert-banner-actions">
                 <Link to={`/alert/${alert.id}`} className="alert-banner-link">{t('alert.view')}</Link>
-                <button onClick={() => dismiss(alert.id)} className="alert-banner-dismiss" aria-label="Dismiss">
+                <button onClick={() => dismiss(alert.id)} className="alert-banner-dismiss" aria-label={t('alert.dismiss')}>
                   <FiX size={18} />
                 </button>
               </div>

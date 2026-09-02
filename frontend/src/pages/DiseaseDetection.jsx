@@ -43,7 +43,7 @@ function DiseaseDetection({ user, onLogout, onUserUpdate }) {
       const res = await axios.post('/api/disease/detect', fd, { headers: { 'Content-Type': 'multipart/form-data' } })
       setResult(res.data)
     } catch (err) {
-      setError(err.response?.data?.message || err.response?.data?.detail || 'Analysis failed. Please try again.')
+      setError(err.response?.data?.message || err.response?.data?.detail || t('disease.analysisFailed'))
     } finally {
       setLoading(false)
     }
@@ -100,7 +100,7 @@ function DiseaseDetection({ user, onLogout, onUserUpdate }) {
                 </div>
                 <div className="param-item" style={{ marginBottom: 'var(--space-4)' }}>
                   <span className="param-label">{t('disease.detectedCrop')}</span>
-                  <span className="param-value">{result.crop_name || '—'}</span>
+                  <span className="param-value">{result.crop_name ? t(`crops.${result.crop_name.toLowerCase().replace(/[^a-z]/g, '')}`, { defaultValue: result.crop_name }) : '—'}</span>
                 </div>
                 {!result.is_healthy && (
                   <div className="param-item" style={{ marginBottom: 'var(--space-4)' }}>
@@ -112,9 +112,8 @@ function DiseaseDetection({ user, onLogout, onUserUpdate }) {
                   <span className="param-label">{t('disease.predictionAccuracy')}</span>
                   <span className="param-value">{(result.confidence * 100).toFixed(1)}%</span>
                 </div>
-                <div className="advisory-section">
-                  <h3>{t('common.aiAdvisory')}</h3>
-                  <AdvisoryMarkdown content={result.advisory} className="advisory-content" language={getEffectiveLanguage(user)} />
+                <div className="advisory-section" style={{ marginTop: 'var(--space-6)' }}>
+                  <AdvisoryMarkdown content={result.advisory} className="advisory-content" language={getEffectiveLanguage(user)} source={result.advisory_source || 'ai'} />
                 </div>
                 <button onClick={() => { setResult(null); setImage(null); setPreview(null); }} className="btn btn-outline" style={{ marginTop: 'var(--space-6)' }}>
                   {t('disease.analyzeAnother')}

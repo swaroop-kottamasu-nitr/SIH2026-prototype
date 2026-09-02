@@ -16,6 +16,7 @@ class DiseaseDetectionResponse(BaseModel):
     is_healthy: bool
     advisory: str
     all_predictions: dict
+    advisory_source: str = "ai"
 
 @router.post("/detect", response_model=DiseaseDetectionResponse)
 async def detect_crop_disease(
@@ -56,12 +57,13 @@ async def detect_crop_disease(
         # Prefer explicit language from form, then user profile
         user_lang = (language if language else (user.language if user and user.language else None)) or "en"
 
-        # Generate advisory using Gemini (crop, disease, confidence → human-like suggestions)
-        advisory = generate_disease_advisory(
+        # Generate advisory using Gemini or deterministic local fallback
+        advisory, advisory_source = generate_disease_advisory(
             disease_name=detection_result['disease_name'],
             confidence=detection_result['confidence'],
             crop_name=detection_result.get('crop_name', 'crop'),
-            language=user_lang
+            language=user_lang,
+            return_source=True
         )
 
         # Send email if requested and user exists
@@ -80,7 +82,8 @@ async def detect_crop_disease(
             "confidence": detection_result['confidence'],
             "is_healthy": detection_result['is_healthy'],
             "advisory": advisory,
-            "all_predictions": detection_result['all_predictions']
+            "all_predictions": detection_result['all_predictions'],
+            "advisory_source": advisory_source
         }
     
     except ValueError as e:

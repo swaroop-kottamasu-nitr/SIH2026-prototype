@@ -26,13 +26,13 @@ function Login({ onLogin }) {
     try {
       const { data } = await axios.post('/api/auth/login/request-otp', { identifier, method })
       setMessage(data.otp 
-        ? `Your OTP: ${data.otp}` 
-        : `OTP sent via ${method}. Check your ${method === 'email' ? 'inbox' : 'messages'}.`)
+        ? t('auth.otpMsgDirect', { otp: data.otp }) 
+        : t('auth.otpMsgSent', { method, destination: method === 'email' ? t('auth.inbox') : t('auth.messages') }))
       if (data.otp) setOtp(data.otp)
       setStep('verify')
     } catch (err) {
       const d = err.response?.data?.detail
-      setError(typeof d === 'string' ? d : 'Failed to send OTP. Please try again.')
+      setError(typeof d === 'string' ? d : t('auth.otpSendFailed'))
     } finally {
       setLoading(false)
     }
@@ -48,7 +48,7 @@ function Login({ onLogin }) {
       navigate('/dashboard')
     } catch (err) {
       const d = err.response?.data?.detail
-      setError(typeof d === 'string' ? d : 'Invalid OTP. Please try again.')
+      setError(typeof d === 'string' ? d : t('auth.invalidOtp'))
     } finally {
       setLoading(false)
     }
@@ -63,6 +63,10 @@ function Login({ onLogin }) {
         transition={{ duration: 0.4 }}
       >
         <div className="auth-card">
+          <div className="auth-brand-header">
+            <img src="/agridarshak-logo.jpeg" alt="AgriDarshak" className="auth-logo" />
+            <span className="auth-brand-name">{t('brand')}</span>
+          </div>
           <h1 className="auth-title">{t('auth.welcomeBack')}</h1>
           <p className="auth-subtitle">{t('auth.signInSubtitle')}</p>
 

@@ -1,93 +1,175 @@
-# Smart Crop Advisory System - PowerShell Startup Script
-# This script handles all setup and runs both backend and frontend
+# ============================================================
+# AgriDarshak - PowerShell Startup Script
+# ============================================================
 
+$Host.UI.RawUI.WindowTitle = "AgriDarshak - Startup"
+
+Write-Host ""
 Write-Host "============================================================" -ForegroundColor Green
-Write-Host "Smart Crop Advisory System - Automatic Startup" -ForegroundColor Green
+Write-Host "   AGRIDARSHAK - EARLY WARNING & INTELLIGENCE SYSTEM" -ForegroundColor Green
 Write-Host "============================================================" -ForegroundColor Green
 Write-Host ""
 
-$projectRoot = $PSScriptRoot
+$RootDir = Split-Path -Parent $MyInvocation.MyCommand.Path
+Set-Location $RootDir
 
-# ============================================================
-# BACKEND SETUP AND START
-# ============================================================
-Write-Host "[1/4] Setting up Backend..." -ForegroundColor Cyan
-Set-Location "$projectRoot\backend"
+# ------------------------------------------------------------
+# STEP 1: Safe Port Cleanup
+# ------------------------------------------------------------
+Write-Host "[1/4] Checking ports 8000 and 5173..." -ForegroundColor Cyan
 
-# Check if virtual environment exists, create if not
-if (-not (Test-Path "venv")) {
-    Write-Host "Creating Python virtual environment..." -ForegroundColor Yellow
-    python -m venv venv
+$Ports = @(8000, 5173)
+foreach ($Port in $Ports) {
+    try {
+        $Connections = Get-NetTCPConnection -LocalPort $Port -State Listen -ErrorAction SilentlyContinue
+        foreach ($Conn in $Connections) {
+            $PidToKill = $Conn.OwningProcess
+            if ($PidToKill -gt 0) {
+                Write-Host "      Releasing port $Port (PID $PidToKill)..." -ForegroundColor Yellow
+                Stop-Process -Id $PidToKill -Force -ErrorAction SilentlyContinue
+            }
+        }
+    } catch {
+        # Ignore if Get-NetTCPConnection not available or no permissions
+    }
 }
-
-# Activate virtual environment
-& "venv\Scripts\Activate.ps1"
-
-# Install/Update Python dependencies
-Write-Host "Installing Python dependencies..." -ForegroundColor Yellow
-pip install --quiet --upgrade pip 2>$null
-pip install --quiet -r requirements.txt 2>$null
-pip install --quiet pydantic-settings email-validator 2>$null
-
-# Initialize database
-Write-Host "Initializing database..." -ForegroundColor Yellow
-python init_database.py
-
-# Start backend server in new window
-Write-Host "Starting Backend Server..." -ForegroundColor Green
-Start-Process powershell -ArgumentList "-NoExit", "-Command", "cd '$projectRoot\backend'; .\venv\Scripts\Activate.ps1; python app.py"
-
-Set-Location $projectRoot
-
-# ============================================================
-# FRONTEND SETUP AND START
-# ============================================================
+Start-Sleep -Seconds 1
+Write-Host "      Ports verified." -ForegroundColor Green
 Write-Host ""
-Write-Host "[2/4] Setting up Frontend..." -ForegroundColor Cyan
-Set-Location "$projectRoot\frontend"
 
-# Check if node_modules exists
-if (-not (Test-Path "node_modules")) {
-    Write-Host "Installing Node dependencies (this may take a few minutes)..." -ForegroundColor Yellow
-    npm install
+# ------------------------------------------------------------
+# STEP 2: Configure Python Virtual Environment & Backend
+# ------------------------------------------------------------
+Write-Host "[2/4] Configuring AgriDarshak Backend..." -ForegroundColor Cyan
+
+$PythonExe = $null
+if (Test-Path "$RootDir\backend\.venv\Scripts\python.exe") {
+    $PythonExe = "$RootDir\backend\.venv\Scripts\python.exe"
+} elseif (Test-Path "$RootDir\backend\venv\Scripts\python.exe") {
+    $PythonExe = "$RootDir\backend\venv\Scripts\python.exe"
 } else {
-    Write-Host "Node dependencies already installed (skipping)" -ForegroundColor Gray
+    $SystemPy = Get-Command python -ErrorAction SilentlyContinue
+    if (-not $SystemPy) {
+        Write-Host "[ERROR] Python not found in system PATH. Please install Python 3.10+" -ForegroundColor Red
+        Read-Host "Press Enter to exit..."
+        exit 1
+    }
+    Write-Host "      Creating virtual environment in backend\.venv..." -ForegroundColor Gray
+    Set-Location "$RootDir\backend"
+    & python -m venv .venv
+    Set-Location $RootDir
+    if (Test-Path "$RootDir\backend\.venv\Scripts\python.exe") {
+        $PythonExe = "$RootDir\backend\.venv\Scripts\python.exe"
+    } else {
+        $PythonExe = "python"
+    }
 }
 
-# Start frontend server in new window
-Write-Host "Starting Frontend Server..." -ForegroundColor Green
-Start-Process powershell -ArgumentList "-NoExit", "-Command", "cd '$projectRoot\frontend'; npm run dev"
+Write-Host "      Using Python: $PythonExe" -ForegroundColor Gray
 
-Set-Location $projectRoot
+# Verify dependencies
+$TestDep = & $PythonExe -c "import fastapi, uvicorn, sqlalchemy, pydantic; print('OK')" 2>$null
+if ($TestDep -ne "OK") {
+    Write-Host "      Installing backend dependencies (requirements.txt)..." -ForegroundColor Yellow
+    & $PythonExe -m pip install --quiet --upgrade pip
+    & $PythonExe -m pip install -r "$RootDir\backend\requirements.txt"
+}
 
-# ============================================================
-# COMPLETION
-# ============================================================
-Start-Sleep -Seconds 3
+# Check database
+if (-not (Test-Path "$RootDir\backend\crop_advisory.db")) {
+    Write-Host "      Initializing SQLite database..." -ForegroundColor Gray
+    Set-Location "$RootDir\backend"
+    & $PythonExe init_database.py | Out-Null
+    Set-Location $RootDir
+}
+
+# Launch backend in separate window
+Write-Host "      Starting AgriDarshak backend server on port 8000..." -ForegroundColor Gray
+Start-Process cmd -ArgumentList "/k", "title AgriDarshak Backend (Port 8000) && color 0B && cd /d `"$RootDir\backend`" && echo ============================================================ && echo    AGRIDARSHAK BACKEND SERVER && echo ============================================================ && echo [OK] Running on http://127.0.0.1:8000 && echo [DOCS] API Docs at http://127.0.0.1:8000/docs && echo. && echo KEEP THIS WINDOW OPEN! && echo. && `"$PythonExe`" app.py"
+
+Write-Host ""
+
+# ------------------------------------------------------------
+# STEP 3: Configure Frontend Environment
+# ------------------------------------------------------------
+Write-Host "[3/4] Configuring AgriDarshak Frontend..." -ForegroundColor Cyan
+
+$NodeCheck = Get-Command node -ErrorAction SilentlyContinue
+if (-not $NodeCheck) {
+    Write-Host "[ERROR] Node.js not found in system PATH. Please install Node.js 18+" -ForegroundColor Red
+    Read-Host "Press Enter to exit..."
+    exit 1
+}
+
+if (-not (Test-Path "$RootDir\frontend\node_modules\")) {
+    Write-Host "      Installing frontend packages (npm install)..." -ForegroundColor Yellow
+    Set-Location "$RootDir\frontend"
+    npm install
+    Set-Location $RootDir
+}
+
+# Launch frontend in separate window
+Write-Host "      Starting AgriDarshak frontend server on port 5173..." -ForegroundColor Gray
+Start-Process cmd -ArgumentList "/k", "title AgriDarshak Frontend (Port 5173) && color 0E && cd /d `"$RootDir\frontend`" && echo ============================================================ && echo    AGRIDARSHAK FRONTEND SERVER && echo ============================================================ && echo [OK] Running on http://127.0.0.1:5173 && echo. && echo KEEP THIS WINDOW OPEN! && echo. && npm run dev"
+
+Write-Host ""
+
+# ------------------------------------------------------------
+# STEP 4: Service Readiness & Health Polling
+# ------------------------------------------------------------
+Write-Host "[4/4] Verifying Service Readiness..." -ForegroundColor Cyan
+
+Write-Host "      Waiting for backend at http://127.0.0.1:8000/docs..." -NoNewline
+$BackendReady = $false
+for ($i = 1; $i -le 60; $i++) {
+    try {
+        $res = Invoke-WebRequest -Uri "http://127.0.0.1:8000/health" -UseBasicParsing -TimeoutSec 1 -ErrorAction SilentlyContinue
+        if ($res.StatusCode -eq 200) {
+            $BackendReady = $true
+            break
+        }
+    } catch {
+        Start-Sleep -Seconds 1
+    }
+}
+
+if ($BackendReady) {
+    Write-Host " Ready [OK]" -ForegroundColor Green
+} else {
+    Write-Host " [WARN: Pending]" -ForegroundColor Yellow
+}
+
+Write-Host "      Waiting for frontend at http://127.0.0.1:5173..." -NoNewline
+$FrontendReady = $false
+for ($i = 1; $i -le 60; $i++) {
+    try {
+        $res = Invoke-WebRequest -Uri "http://127.0.0.1:5173" -UseBasicParsing -TimeoutSec 1 -ErrorAction SilentlyContinue
+        if ($res.StatusCode -eq 200) {
+            $FrontendReady = $true
+            break
+        }
+    } catch {
+        Start-Sleep -Seconds 1
+    }
+}
+
+if ($FrontendReady) {
+    Write-Host " Ready [OK]" -ForegroundColor Green
+} else {
+    Write-Host " [WARN: Pending]" -ForegroundColor Yellow
+}
 
 Write-Host ""
 Write-Host "============================================================" -ForegroundColor Green
-Write-Host "✅ Smart Crop Advisory System Started Successfully!" -ForegroundColor Green
+Write-Host "   SUCCESS! AgriDarshak is fully operational" -ForegroundColor Green
 Write-Host "============================================================" -ForegroundColor Green
 Write-Host ""
-Write-Host "Backend:  " -NoNewline -ForegroundColor White
-Write-Host "http://localhost:8000" -ForegroundColor Cyan
-Write-Host "API Docs: " -NoNewline -ForegroundColor White
-Write-Host "http://localhost:8000/docs" -ForegroundColor Cyan
-Write-Host "Frontend: " -NoNewline -ForegroundColor White
-Write-Host "http://localhost:5173" -ForegroundColor Cyan
+Write-Host "  - Web Application: http://127.0.0.1:5173" -ForegroundColor White
+Write-Host "  - Interactive API: http://127.0.0.1:8000/docs" -ForegroundColor White
 Write-Host ""
-Write-Host "Both servers are running in separate windows." -ForegroundColor Yellow
-Write-Host "Close those windows to stop the servers." -ForegroundColor Yellow
-Write-Host ""
-Write-Host "Opening application in browser..." -ForegroundColor Green
-
-# Wait a bit for servers to start
-Start-Sleep -Seconds 5
-
-# Open application in default browser
-Start-Process "http://localhost:5173"
+Write-Host "Opening AgriDarshak in your default browser..." -ForegroundColor Cyan
+Start-Process "http://127.0.0.1:5173"
 
 Write-Host ""
-Write-Host "Press any key to exit this window..." -ForegroundColor Gray
+Write-Host "Press any key to close this startup monitor..."
 $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")

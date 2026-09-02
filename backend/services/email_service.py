@@ -47,19 +47,19 @@ class EmailService:
     
     def send_otp_email(self, to_email: str, otp: str, name: str = "Farmer"):
         """Send OTP verification email"""
-        subject = "Your Smart Crop Advisory Login OTP"
+        subject = "Your AgriDarshak Login OTP"
         html_content = f"""
         <html>
             <body style="font-family: Arial, sans-serif; padding: 20px; background-color: #f5f5f5;">
                 <div style="max-width: 600px; margin: 0 auto; background-color: white; padding: 30px; border-radius: 10px;">
-                    <h2 style="color: #2d5016;">Smart Crop Advisory System</h2>
+                    <h2 style="color: #1F7A45;">AgriDarshak</h2>
                     <p>Dear {name},</p>
                     <p>Your one-time password (OTP) for login is:</p>
-                    <h1 style="color: #4a7c2c; font-size: 36px; letter-spacing: 5px;">{otp}</h1>
+                    <h1 style="color: #1F7A45; font-size: 36px; letter-spacing: 5px;">{otp}</h1>
                     <p>This OTP is valid for 10 minutes.</p>
                     <p>If you didn't request this OTP, please ignore this email.</p>
                     <hr style="margin: 30px 0;">
-                    <p style="color: #666; font-size: 12px;">Smart Crop Advisory System - Empowering Farmers with AI</p>
+                    <p style="color: #666; font-size: 12px;">AgriDarshak - Empowering Farmers with AI</p>
                 </div>
             </body>
         </html>
@@ -85,7 +85,7 @@ class EmailService:
                     </div>
                     <p>Please take immediate action to protect your crops.</p>
                     <hr style="margin: 30px 0;">
-                    <p style="color: #666; font-size: 12px;">Smart Crop Advisory System</p>
+                    <p style="color: #666; font-size: 12px;">AgriDarshak</p>
                 </div>
             </body>
         </html>
@@ -121,7 +121,7 @@ class EmailService:
                     </div>
                     <p>Please take necessary precautions to protect your crops.</p>
                     <hr style="margin: 30px 0;">
-                    <p style="color: #666; font-size: 12px;">Smart Crop Advisory System</p>
+                    <p style="color: #666; font-size: 12px;">AgriDarshak</p>
                 </div>
             </body>
         </html>

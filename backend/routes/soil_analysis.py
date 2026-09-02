@@ -74,6 +74,7 @@ class SoilTypeResponse(BaseModel):
     soil_type: str
     characteristics: dict
     explanation: str
+    advisory_source: str = "ai"
 
 @router.get("/types")
 def get_soil_types():
@@ -99,16 +100,18 @@ async def detect_soil_from_image(
         user = db.query(User).filter(User.id == uid).first() if uid else None
         lang = (language if language else (user.language if user and user.language else None)) or "en"
         characteristics = result.get("characteristics", {})
-        explanation = generate_soil_type_explanation(
+        explanation, advisory_source = generate_soil_type_explanation(
             soil_type=result["soil_type"],
             characteristics=characteristics,
             language=lang,
+            return_source=True
         )
         return {
             "soil_type": result["soil_type"],
             "confidence": result.get("confidence", 0),
             "characteristics": characteristics,
             "explanation": explanation,
+            "advisory_source": advisory_source
         }
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
@@ -117,7 +120,7 @@ async def detect_soil_from_image(
 
 @router.post("/select-type", response_model=SoilTypeResponse)
 def select_soil_type(request: SoilTypeSelectionRequest, db: Session = Depends(get_db)):
-    """Manual soil type selection with Gemini explanation"""
+    """Manual soil type selection with Gemini explanation or deterministic fallback"""
     if request.soil_type not in SOIL_TYPES:
         raise HTTPException(status_code=400, detail=f"Invalid soil type. Choose from: {', '.join(SOIL_TYPES)}")
     
@@ -132,17 +135,19 @@ def select_soil_type(request: SoilTypeSelectionRequest, db: Session = Depends(ge
     user = db.query(User).filter(User.id == request.user_id).first() if request.user_id else None
     lang = (request.language or (user.language if user and user.language else None)) or "en"
 
-    # Generate Gemini explanation (with user language)
-    explanation = generate_soil_type_explanation(
+    # Generate Gemini explanation or deterministic fallback
+    explanation, advisory_source = generate_soil_type_explanation(
         soil_type=request.soil_type,
         characteristics=characteristics,
-        language=lang
+        language=lang,
+        return_source=True
     )
     
     return {
         "soil_type": request.soil_type,
         "characteristics": characteristics,
-        "explanation": explanation
+        "explanation": explanation,
+        "advisory_source": advisory_source
     }
 
 class SoilAnalysisRequest(BaseModel):
@@ -162,6 +167,7 @@ class SoilAnalysisResponse(BaseModel):
     soil_health: str
     fertilizer_recommendations: list
     explanation: str
+    advisory_source: str = "ai"
 
 @router.post("/analyze", response_model=SoilAnalysisResponse)
 def analyze_soil(request: SoilAnalysisRequest, db: Session = Depends(get_db)):
@@ -196,8 +202,8 @@ def analyze_soil(request: SoilAnalysisRequest, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.id == request.user_id).first() if request.user_id else None
     lang = (request.language or (user.language if user and user.language else None)) or "en"
 
-    # Generate Gemini explanation (with user language)
-    explanation = generate_soil_analysis_explanation(
+    # Generate Gemini explanation or deterministic fallback
+    explanation, advisory_source = generate_soil_analysis_explanation(
         soil_params={
             "nitrogen": request.nitrogen,
             "phosphorus": request.phosphorus,
@@ -207,7 +213,8 @@ def analyze_soil(request: SoilAnalysisRequest, db: Session = Depends(get_db)):
             "soil_type": request.soil_type
         },
         fertilizer_recommendations=fertilizers,
-        language=lang
+        language=lang,
+        return_source=True
     )
     
     # Save to history
@@ -242,7 +249,8 @@ def analyze_soil(request: SoilAnalysisRequest, db: Session = Depends(get_db)):
         },
         "soil_health": soil_health,
         "fertilizer_recommendations": fertilizers,
-        "explanation": explanation
+        "explanation": explanation,
+        "advisory_source": advisory_source
     }
 
 @router.get("/history/{user_id}")

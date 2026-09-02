@@ -1,93 +1,181 @@
 @echo off
+setlocal enabledelayedexpansion
+
 REM ============================================================
-REM Smart Crop Advisory System - One-Click Startup
-REM Double-click this file to start everything!
+REM AgriDarshak - One-Click Reliable Startup
 REM ============================================================
 
-TITLE Smart Crop Advisory System
+TITLE AgriDarshak - Startup
 
 echo.
 echo ============================================================
-echo    SMART CROP ADVISORY SYSTEM
+echo    AGRIDARSHAK - EARLY WARNING ^& INTELLIGENCE SYSTEM
 echo ============================================================
 echo.
-echo Starting servers...
-echo.
 
-REM Navigate to script directory
 cd /d "%~dp0"
 
 REM ============================================================
-REM STEP 1: Clean up old servers
+REM STEP 1: Safe Port Cleanup (Targeted PIDs only)
 REM ============================================================
-echo [1/3] Stopping old servers...
-taskkill /F /IM python.exe >nul 2>&1
-taskkill /F /IM node.exe >nul 2>&1
-timeout /t 2 /nobreak >nul
-echo       Done!
+echo [1/4] Checking ports 8000 and 5173...
+for /f "tokens=5" %%a in ('netstat -ano ^| findstr ":8000" ^| findstr /i "LISTENING"') do (
+    if not "%%a"=="0" (
+        echo       Releasing occupied port 8000 - PID %%a
+        taskkill /F /PID %%a >nul 2>&1
+    )
+)
+
+for /f "tokens=5" %%a in ('netstat -ano ^| findstr ":5173" ^| findstr /i "LISTENING"') do (
+    if not "%%a"=="0" (
+        echo       Releasing occupied port 5173 - PID %%a
+        taskkill /F /PID %%a >nul 2>&1
+    )
+)
+ping 127.0.0.1 -n 2 >nul
+echo       Ports verified.
 echo.
 
 REM ============================================================
-REM STEP 2: Start Backend Server (with CORS enabled)
+REM STEP 2: Detect & Prepare Python Environment
 REM ============================================================
-echo [2/3] Starting Backend...
-cd backend
-start "BACKEND - http://localhost:8000" cmd /k "title BACKEND SERVER && color 0B && echo. && echo Backend Server Running && echo URL: http://localhost:8000 && echo API Docs: http://localhost:8000/docs && echo. && echo KEEP THIS WINDOW OPEN! && echo. && python app.py"
-cd ..
-echo       Backend starting in blue window...
-timeout /t 4 /nobreak >nul
+echo [2/4] Configuring AgriDarshak Backend...
+
+set "PYTHON_EXE="
+
+if exist "backend\.venv\Scripts\python.exe" (
+    set "PYTHON_EXE=%CD%\backend\.venv\Scripts\python.exe"
+)
+if not defined PYTHON_EXE if exist "backend\venv\Scripts\python.exe" (
+    set "PYTHON_EXE=%CD%\backend\venv\Scripts\python.exe"
+)
+if not defined PYTHON_EXE (
+    where python >nul 2>&1
+    if !errorlevel! neq 0 (
+        echo [ERROR] Python not found in PATH! Please install Python 3.10+
+        pause
+        exit /b 1
+    )
+    echo       Creating Python virtual environment in backend\.venv...
+    cd backend
+    python -m venv .venv
+    cd ..
+    if exist "backend\.venv\Scripts\python.exe" (
+        set "PYTHON_EXE=%CD%\backend\.venv\Scripts\python.exe"
+    ) else (
+        set "PYTHON_EXE=python"
+    )
+)
+
+echo       Using Python: "!PYTHON_EXE!"
+
+REM Check if backend requirements are installed
+"!PYTHON_EXE!" -c "import fastapi, uvicorn, sqlalchemy, pydantic" >nul 2>&1
+if !errorlevel! neq 0 (
+    echo       Installing backend dependencies - requirements.txt...
+    "!PYTHON_EXE!" -m pip install --quiet --upgrade pip
+    "!PYTHON_EXE!" -m pip install -r backend\requirements.txt
+)
+
+REM Initialize SQLite database tables & seeds
+if not exist "backend\crop_advisory.db" (
+    echo       Initializing SQLite database...
+    cd backend
+    "!PYTHON_EXE!" init_database.py >nul 2>&1
+    cd ..
+)
+
+REM Start Backend in separate window
+echo       Starting AgriDarshak backend server on port 8000...
+cd /d "%~dp0backend"
+start "AgriDarshak Backend - http://127.0.0.1:8000" "!PYTHON_EXE!" app.py
+cd /d "%~dp0"
+
 echo.
 
 REM ============================================================
-REM STEP 3: Start Frontend Server
+REM STEP 3: Detect & Prepare Frontend Environment
 REM ============================================================
-echo [3/3] Starting Frontend...
-cd frontend
-start "FRONTEND - http://localhost:5173" cmd /k "title FRONTEND SERVER && color 0E && echo. && echo Frontend Server Running && echo URL: http://localhost:5173 && echo. && echo KEEP THIS WINDOW OPEN! && echo. && npm run dev"
-cd ..
-echo       Frontend starting in yellow window...
+echo [3/4] Configuring AgriDarshak Frontend...
+
+where node >nul 2>&1
+if %errorlevel% neq 0 (
+    echo [ERROR] Node.js not found in PATH! Please install Node.js 18+
+    pause
+    exit /b 1
+)
+
+if not exist "frontend\node_modules\" (
+    echo       Installing frontend dependencies - npm install...
+    cd frontend
+    call npm install
+    cd ..
+)
+
+REM Start Frontend in separate window
+echo       Starting AgriDarshak frontend server on port 5173...
+cd /d "%~dp0frontend"
+start "AgriDarshak Frontend - http://127.0.0.1:5173" cmd /k "call npm run dev"
+cd /d "%~dp0"
+
 echo.
 
 REM ============================================================
-REM Wait for servers to fully start
+REM STEP 4: Service Readiness Checks & Health Polling
 REM ============================================================
-echo ============================================================
-echo    Please wait while servers start...
-echo ============================================================
-echo.
-timeout /t 8 /nobreak
+echo [4/4] Verifying Service Readiness...
 
-REM ============================================================
-REM Open Browser
-REM ============================================================
-echo Opening browser...
-start http://localhost:5173
-echo.
+REM Wait for Backend (max 60s)
+echo       Waiting for backend at http://127.0.0.1:8000/docs...
+set "BACKEND_READY=0"
+for /L %%i in (1,1,60) do (
+    if "!BACKEND_READY!"=="0" (
+        "!PYTHON_EXE!" -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=1)" >nul 2>&1
+        if !errorlevel! equ 0 (
+            set "BACKEND_READY=1"
+        ) else (
+            ping 127.0.0.1 -n 2 >nul
+        )
+    )
+)
 
-REM ============================================================
-REM Success Message
-REM ============================================================
+if "!BACKEND_READY!"=="1" (
+    echo       AgriDarshak backend ready - http://127.0.0.1:8000 [OK]
+) else (
+    echo       [WARN] Backend taking longer to respond. Proceeding...
+)
+
+REM Wait for Frontend (max 60s)
+echo       Waiting for frontend at http://127.0.0.1:5173...
+set "FRONTEND_READY=0"
+for /L %%i in (1,1,60) do (
+    if "!FRONTEND_READY!"=="0" (
+        "!PYTHON_EXE!" -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:5173', timeout=1)" >nul 2>&1
+        if !errorlevel! equ 0 (
+            set "FRONTEND_READY=1"
+        ) else (
+            ping 127.0.0.1 -n 2 >nul
+        )
+    )
+)
+
+if "!FRONTEND_READY!"=="1" (
+    echo       AgriDarshak frontend ready - http://127.0.0.1:5173 [OK]
+) else (
+    echo       [WARN] Frontend taking longer to respond. Proceeding...
+)
+
+echo.
 echo ============================================================
-echo    SUCCESS! Application is Running
+echo    SUCCESS! AgriDarshak is fully operational
 echo ============================================================
 echo.
-echo   Two windows have opened:
-echo   - BLUE WINDOW   = Backend Server
-echo   - YELLOW WINDOW = Frontend Server
+echo   - Web Application: http://127.0.0.1:5173
+echo   - Interactive API: http://127.0.0.1:8000/docs
 echo.
-echo   URLs:
-echo   - Main App:  http://localhost:5173
-echo   - API Docs:  http://localhost:8000/docs
+echo   Opening AgriDarshak in your default browser...
+start http://127.0.0.1:5173
+
 echo.
-echo   IMPORTANT:
-echo   - Keep both colored windows open!
-echo   - Close them when you want to stop the servers
-echo.
-echo   Your browser should now be open.
-echo   If you see CORS errors, the backend may still be starting.
-echo   Wait 5 seconds and refresh the page.
-echo.
-echo ============================================================
-echo.
-echo Press any key to close this startup window...
+echo Press any key to close this startup monitor window...
 pause >nul

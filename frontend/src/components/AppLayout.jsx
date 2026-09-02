@@ -1,7 +1,7 @@
 import { Link, useLocation } from 'react-router-dom'
-import { motion } from 'framer-motion'
-import { FiMenu, FiX, FiLogOut } from 'react-icons/fi'
-import { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { FiMenu, FiX, FiLogOut, FiChevronDown } from 'react-icons/fi'
+import { useState, useRef, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import axios from 'axios'
 import i18n, { SUPPORTED_LANGS, setStoredLanguage, getStoredLanguage } from '../i18n'
@@ -11,7 +11,27 @@ function AppLayout({ children, user, onLogout, onUserUpdate }) {
   const { t } = useTranslation()
   const location = useLocation()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [toolsOpen, setToolsOpen] = useState(false)
+  const dropdownRef = useRef(null)
+  
   const currentLang = i18n.language || user?.language || (typeof window !== 'undefined' ? getStoredLanguage() || 'en' : 'en')
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    const handleOutsideClick = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setToolsOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleOutsideClick)
+    return () => document.removeEventListener('mousedown', handleOutsideClick)
+  }, [])
+
+  // Close menus on route change
+  useEffect(() => {
+    setMobileMenuOpen(false)
+    setToolsOpen(false)
+  }, [location.pathname])
 
   const handleLanguageChange = async (lang) => {
     if (user?.id && onUserUpdate) {
@@ -29,24 +49,112 @@ function AppLayout({ children, user, onLogout, onUserUpdate }) {
     return location.pathname.startsWith(path)
   }
 
+  const isToolsActive = ['/disease-detection', '/soil-analysis', '/crop-recommendation'].some(p => location.pathname.startsWith(p))
+
   return (
     <div className="app-layout">
       <header className="app-nav">
         <div className="nav-container">
-          <Link to="/dashboard" className="nav-brand">
-            <span className="brand-icon">🌾</span>
-            <span className="brand-text">{t('brand')}</span>
+          {/* 1. Brand Logo & Title */}
+          <Link to="/dashboard" className="nav-brand" aria-label="AgriDarshak Dashboard">
+            <img 
+              src="/agridarshak-logo.jpeg" 
+              alt="AgriDarshak" 
+              className="brand-logo" 
+            />
+            <span className="brand-text">AgriDarshak</span>
           </Link>
 
-          <nav className="nav-links">
-            <Link to="/dashboard" className={`nav-link ${isActive('/dashboard') ? 'active' : ''}`}>
-              {t('common.dashboard')}
+          {/* 2. Responsive Desktop Navigation */}
+          <nav className="nav-links" aria-label="Primary Navigation">
+            <Link 
+              to="/dashboard" 
+              className={`nav-link ${isActive('/dashboard') ? 'active' : ''}`}
+            >
+              {t('nav.dashboard', { defaultValue: t('common.dashboard') })}
             </Link>
+
+            <Link 
+              to="/weather" 
+              className={`nav-link ${isActive('/weather') ? 'active' : ''}`}
+            >
+              {t('nav.weather', { defaultValue: t('dashboard.liveWeather') })}
+            </Link>
+
+            <Link 
+              to="/market-prices" 
+              className={`nav-link ${isActive('/market-prices') ? 'active' : ''}`}
+            >
+              {t('nav.market', { defaultValue: t('dashboard.marketPrices') })}
+            </Link>
+
+            {/* Clean 'Tools' Dropdown to prevent navbar overflow */}
+            <div className="nav-dropdown-wrapper" ref={dropdownRef}>
+              <button
+                type="button"
+                className={`nav-link nav-dropdown-btn ${isToolsActive ? 'active' : ''}`}
+                onClick={() => setToolsOpen(!toolsOpen)}
+                aria-expanded={toolsOpen}
+                aria-haspopup="true"
+              >
+                <span>{t('nav.tools', { defaultValue: 'Tools' })}</span>
+                <FiChevronDown className={`dropdown-caret ${toolsOpen ? 'open' : ''}`} size={14} />
+              </button>
+
+              <AnimatePresence>
+                {toolsOpen && (
+                  <motion.div
+                    className="nav-dropdown-menu"
+                    initial={{ opacity: 0, y: 8, scale: 0.96 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 6, scale: 0.96 }}
+                    transition={{ duration: 0.15 }}
+                  >
+                    <Link
+                      to="/disease-detection"
+                      className={`dropdown-item ${isActive('/disease-detection') ? 'active' : ''}`}
+                      onClick={() => setToolsOpen(false)}
+                    >
+                      <span className="item-icon">🔬</span>
+                      <div className="item-text">
+                        <span className="item-title">{t('dashboard.diseaseDetection')}</span>
+                        <span className="item-sub">{t('nav.disease', { defaultValue: 'Leaf Pathology AI' })}</span>
+                      </div>
+                    </Link>
+
+                    <Link
+                      to="/soil-analysis"
+                      className={`dropdown-item ${isActive('/soil-analysis') ? 'active' : ''}`}
+                      onClick={() => setToolsOpen(false)}
+                    >
+                      <span className="item-icon">🌱</span>
+                      <div className="item-text">
+                        <span className="item-title">{t('dashboard.soilAnalysis')}</span>
+                        <span className="item-sub">{t('nav.soil', { defaultValue: 'NPK & pH Fertility' })}</span>
+                      </div>
+                    </Link>
+
+                    <Link
+                      to="/crop-recommendation"
+                      className={`dropdown-item ${isActive('/crop-recommendation') ? 'active' : ''}`}
+                      onClick={() => setToolsOpen(false)}
+                    >
+                      <span className="item-icon">🌾</span>
+                      <div className="item-text">
+                        <span className="item-title">{t('dashboard.cropRecommendation')}</span>
+                        <span className="item-sub">{t('nav.crop', { defaultValue: 'Multi-Factor Advisory' })}</span>
+                      </div>
+                    </Link>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
           </nav>
 
+          {/* 3. Actions: Language + Farmer User Chip + Accessible Logout */}
           <div className="nav-actions">
             <div className="lang-selector">
-              <span className="lang-label">{t('common.languageLabel')}</span>
+              <span className="lang-icon" aria-hidden="true">🌐</span>
               <select
                 className="lang-select"
                 value={currentLang}
@@ -59,55 +167,111 @@ function AppLayout({ children, user, onLogout, onUserUpdate }) {
                 ))}
               </select>
             </div>
-            <span className="user-name">{user?.name}</span>
-            <button onClick={onLogout} className="btn btn-secondary btn-icon" aria-label={t('common.logout')}>
-              <FiLogOut size={18} />
-              {t('common.logout')}
+
+            <div className="nav-farmer-chip" title={user?.location || ''}>
+              <span className="farmer-chip-avatar">👨‍🌾</span>
+              <span className="farmer-chip-name">{user?.name || t('dashboard.farmer')}</span>
+            </div>
+
+            <button 
+              type="button"
+              onClick={onLogout} 
+              className="btn-nav-logout" 
+              aria-label={t('common.logout')}
+              title={t('common.logout')}
+            >
+              <FiLogOut size={15} />
+              <span className="logout-text">{t('common.logout')}</span>
+            </button>
+
+            {/* Mobile Hamburger Button */}
+            <button
+              className="nav-toggle"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label="Toggle menu"
+              aria-expanded={mobileMenuOpen}
+            >
+              {mobileMenuOpen ? <FiX size={22} /> : <FiMenu size={22} />}
             </button>
           </div>
-
-          <button
-            className="nav-toggle"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label="Toggle menu"
-            aria-expanded={mobileMenuOpen}
-          >
-            {mobileMenuOpen ? <FiX size={24} /> : <FiMenu size={24} />}
-          </button>
         </div>
 
-        {mobileMenuOpen && (
-          <motion.div
-            className="nav-mobile"
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.2 }}
-          >
-            <Link
-              to="/dashboard"
-              className={`nav-mobile-link ${isActive('/dashboard') ? 'active' : ''}`}
-              onClick={() => setMobileMenuOpen(false)}
+        {/* 4. Mobile Drawer Menu */}
+        <AnimatePresence>
+          {mobileMenuOpen && (
+            <motion.div
+              className="nav-mobile"
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.2 }}
             >
-              {t('common.dashboard')}
-            </Link>
-            <div className="lang-selector-mobile">
-              <span className="lang-label">{t('common.languageLabel')}</span>
-              <select
-                className="lang-select-mobile"
-                value={currentLang}
-                onChange={(e) => handleLanguageChange(e.target.value)}
+              <Link
+                to="/dashboard"
+                className={`nav-mobile-link ${isActive('/dashboard') ? 'active' : ''}`}
+                onClick={() => setMobileMenuOpen(false)}
               >
-                {SUPPORTED_LANGS.map((l) => (
-                  <option key={l.code} value={l.code}>{l.label}</option>
-                ))}
-              </select>
-            </div>
-            <button onClick={() => { onLogout(); setMobileMenuOpen(false); }} className="nav-mobile-link nav-mobile-logout">
-              {t('common.logout')}
-            </button>
-          </motion.div>
-        )}
+                🌾 {t('common.dashboard')}
+              </Link>
+              <Link
+                to="/weather"
+                className={`nav-mobile-link ${isActive('/weather') ? 'active' : ''}`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                🌧 {t('dashboard.liveWeather')}
+              </Link>
+              <Link
+                to="/market-prices"
+                className={`nav-mobile-link ${isActive('/market-prices') ? 'active' : ''}`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                📈 {t('dashboard.marketPrices')}
+              </Link>
+              <Link
+                to="/disease-detection"
+                className={`nav-mobile-link ${isActive('/disease-detection') ? 'active' : ''}`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                🔬 {t('dashboard.diseaseDetection')}
+              </Link>
+              <Link
+                to="/soil-analysis"
+                className={`nav-mobile-link ${isActive('/soil-analysis') ? 'active' : ''}`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                🌱 {t('dashboard.soilAnalysis')}
+              </Link>
+              <Link
+                to="/crop-recommendation"
+                className={`nav-mobile-link ${isActive('/crop-recommendation') ? 'active' : ''}`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                🌾 {t('dashboard.cropRecommendation')}
+              </Link>
+
+              <div className="lang-selector-mobile">
+                <span className="lang-label">🌐 {t('common.languageLabel')}</span>
+                <select
+                  className="lang-select-mobile"
+                  value={currentLang}
+                  onChange={(e) => handleLanguageChange(e.target.value)}
+                >
+                  {SUPPORTED_LANGS.map((l) => (
+                    <option key={l.code} value={l.code}>{l.label}</option>
+                  ))}
+                </select>
+              </div>
+
+              <button 
+                type="button"
+                onClick={() => { onLogout(); setMobileMenuOpen(false); }} 
+                className="nav-mobile-link nav-mobile-logout"
+              >
+                <FiLogOut size={16} /> {t('common.logout')}
+              </button>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </header>
 
       <main className="app-main">

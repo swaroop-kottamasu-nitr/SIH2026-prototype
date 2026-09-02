@@ -4,14 +4,14 @@ from database import init_db
 from config import get_settings
 
 # Import routes
-from routes import auth, disease_detection, soil_analysis, crop_recommendation, weather, market_prices, farm_health
+from routes import auth, disease_detection, soil_analysis, crop_recommendation, weather, market_prices, farm_health, advisory
 
 settings = get_settings()
 
 # Create FastAPI app
 app = FastAPI(
-    title="Smart Crop Advisory System",
-    description="AI-powered agricultural decision support system for Indian farmers",
+    title="AgriDarshak",
+    description="AI-powered agricultural decision support & early-warning platform for Indian farmers",
     version="1.0.0"
 )
 
@@ -46,12 +46,13 @@ app.include_router(crop_recommendation.router)
 app.include_router(weather.router)
 app.include_router(market_prices.router)
 app.include_router(farm_health.router)
+app.include_router(advisory.router)
 
 # Root endpoint
 @app.get("/")
 def root():
     return {
-        "message": "Smart Crop Advisory System API",
+        "message": "AgriDarshak API",
         "version": "1.0.0",
         "status": "operational",
         "docs": "/docs"
@@ -64,7 +65,7 @@ def health_check():
 
 if __name__ == "__main__":
     import uvicorn
-    print("\n[START] Smart Crop Advisory System Backend...")
+    print("\n[START] AgriDarshak Backend...")
     print("[BACKEND] http://localhost:8000")
     print("[DOCS] http://localhost:8000/docs")
     print("[TIP] Use 'localhost' not '0.0.0.0' to access from browser\n")

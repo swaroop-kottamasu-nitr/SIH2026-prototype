@@ -71,8 +71,7 @@ function AlertDetail({ user, onLogout, onUserUpdate }) {
             </div>
             {alert.recommendations && (
               <div className="advisory-section" style={{ marginTop: 'var(--space-6)' }}>
-                <h3>{t('common.aiAdvisory')}</h3>
-                <AdvisoryMarkdown content={alert.recommendations} className="advisory-content" language={getEffectiveLanguage(user)} />
+                <AdvisoryMarkdown content={alert.recommendations} className="advisory-content" language={getEffectiveLanguage(user)} source={alert.advisory_source || 'ai'} />
               </div>
             )}
             <p style={{ marginTop: 'var(--space-6)', fontSize: 'var(--text-sm)', color: 'var(--color-text-tertiary)' }}>

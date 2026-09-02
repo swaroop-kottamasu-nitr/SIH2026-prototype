@@ -10,7 +10,17 @@ import AdvisoryMarkdown from '../components/AdvisoryMarkdown'
 import { FiArrowLeft, FiImage, FiList } from 'react-icons/fi'
 import './FeaturePage.css'
 
-const SOIL_TYPES = ['Clay', 'Sandy', 'Loamy', 'Silty', 'Peaty', 'Chalky', 'Red Soil', 'Black Soil', 'Alluvial']
+const SOIL_TYPES = [
+  { value: 'Clay', key: 'clay' },
+  { value: 'Sandy', key: 'sandy' },
+  { value: 'Loamy', key: 'loamy' },
+  { value: 'Silty', key: 'silty' },
+  { value: 'Peaty', key: 'peaty' },
+  { value: 'Chalky', key: 'chalky' },
+  { value: 'Red Soil', key: 'redSoil' },
+  { value: 'Black Soil', key: 'blackSoil' },
+  { value: 'Alluvial', key: 'alluvial' }
+]
 
 function SoilTypeDetection({ user, onLogout, onUserUpdate }) {
   const { t } = useTranslation()
@@ -43,7 +53,7 @@ function SoilTypeDetection({ user, onLogout, onUserUpdate }) {
       const res = await axios.post('/api/soil/select-type', { user_id: user.id, soil_type: selectedSoilType, location, language: getEffectiveLanguage(user) })
       setResult(res.data)
     } catch (err) {
-      setError(err.response?.data?.detail || 'Failed to get soil information')
+      setError(err.response?.data?.detail || t('soilType.errorSelect'))
     } finally {
       setLoading(false)
     }
@@ -62,7 +72,7 @@ function SoilTypeDetection({ user, onLogout, onUserUpdate }) {
       const res = await axios.post('/api/soil/detect-from-image', fd, { headers: { 'Content-Type': 'multipart/form-data' } })
       setResult(res.data)
     } catch (err) {
-      setError(err.response?.data?.detail || 'Soil detection failed.')
+      setError(err.response?.data?.detail || t('soilType.errorDetect'))
     } finally {
       setLoading(false)
     }
@@ -112,7 +122,9 @@ function SoilTypeDetection({ user, onLogout, onUserUpdate }) {
                   <label className="form-label">{t('soil.soilType')}</label>
                   <select className="form-control" value={selectedSoilType} onChange={e => setSelectedSoilType(e.target.value)} disabled={loading}>
                     <option value="">— {t('common.select')} —</option>
-                    {SOIL_TYPES.map(t => <option key={t} value={t}>{t}</option>)}
+                    {SOIL_TYPES.map(st => (
+                      <option key={st.value} value={st.value}>{t(`soilTypes.${st.key}`, { defaultValue: st.value })}</option>
+                    ))}
                   </select>
                 </div>
                 <div className="form-group">
@@ -160,7 +172,7 @@ function SoilTypeDetection({ user, onLogout, onUserUpdate }) {
 
             {result && (
               <motion.div className="result-card" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
-                <h2>Soil Type: {result.soil_type}</h2>
+                <h2>{t('soilType.detectedSoilType', { type: t(`soilTypes.${result.soil_type.toLowerCase().replace(/[^a-z]/g, '')}`, { defaultValue: result.soil_type }) })}</h2>
                 {result.confidence && (
                   <p style={{ color: 'var(--color-text-secondary)', marginBottom: 'var(--space-4)' }}>
                     {t('common.confidence')}: {(result.confidence * 100).toFixed(1)}%
@@ -171,15 +183,14 @@ function SoilTypeDetection({ user, onLogout, onUserUpdate }) {
                   <div className="characteristics-grid">
                     {Object.entries(formatCharacteristics(result.characteristics)).map(([k, v]) => (
                       <div key={k} className="characteristic-item">
-                        <span className="char-label">{k.replace(/_/g, ' ')}</span>
+                        <span className="char-label">{t(`soilType.charLabels.${k}`, { defaultValue: k.replace(/_/g, ' ') })}</span>
                         <span className="char-value">{Array.isArray(v) ? v.join(', ') : v}</span>
                       </div>
                     ))}
                   </div>
                 </div>
                 <div className="advisory-section" style={{ marginTop: 'var(--space-6)' }}>
-                  <h3>{t('common.aiAdvisory')}</h3>
-                  <AdvisoryMarkdown content={result.explanation} className="gemini-advisory advisory-content" language={getEffectiveLanguage(user)} />
+                  <AdvisoryMarkdown content={result.explanation} className="gemini-advisory advisory-content" language={getEffectiveLanguage(user)} source={result.advisory_source || 'ai'} />
                 </div>
               </motion.div>
             )}

@@ -94,7 +94,7 @@ class OTPService:
         
         try:
             message = self.twilio_client.messages.create(
-                body=f"Your Smart Crop Advisory OTP is: {otp}. Valid for 10 minutes.",
+                body=f"Your AgriDarshak OTP is: {otp}. Valid for 10 minutes.",
                 from_=self.twilio_number,
                 to=phone
             )

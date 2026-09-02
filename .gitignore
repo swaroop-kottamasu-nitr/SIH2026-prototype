@@ -4,12 +4,15 @@ __pycache__/
 *$py.class
 *.so
 .Python
+backend/.venv/
+.venv/
 backend/venv/
 venv/
 ENV/
 env/
 *.db
 *.sqlite3
+*.log
 
 # Node / Frontend
 frontend/node_modules/

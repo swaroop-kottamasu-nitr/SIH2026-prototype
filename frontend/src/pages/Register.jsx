@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import axios from 'axios'
 import { motion } from 'framer-motion'
+import { SUPPORTED_LANGS } from '../i18n'
 import './Auth.css'
 
 function Register() {
@@ -12,8 +13,8 @@ function Register() {
     name: '',
     email: '',
     phone: '',
-    location: 'Andhra Pradesh',
-    language: 'te'
+    location: 'Rourkela, Odisha',
+    language: 'or'
   })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -28,7 +29,7 @@ function Register() {
     setError('')
     try {
       await axios.post('/api/auth/register', formData)
-      alert('Registration successful! Please sign in.')
+      alert(t('auth.regSuccess'))
       navigate('/login')
     } catch (err) {
       const detail = err.response?.data?.detail
@@ -36,7 +37,7 @@ function Register() {
         ? detail
         : Array.isArray(detail) && detail[0]?.msg
           ? detail[0].msg
-          : 'Registration failed. Please try again.'
+          : t('auth.regFailed')
       setError(message)
     } finally {
       setLoading(false)
@@ -52,6 +53,10 @@ function Register() {
         transition={{ duration: 0.4 }}
       >
         <div className="auth-card">
+          <div className="auth-brand-header">
+            <img src="/agridarshak-logo.jpeg" alt="AgriDarshak" className="auth-logo" />
+            <span className="auth-brand-name">{t('brand')}</span>
+          </div>
           <h1 className="auth-title">{t('auth.createAccountTitle')}</h1>
           <p className="auth-subtitle">{t('auth.createAccountSubtitle')}</p>
 
@@ -106,35 +111,32 @@ function Register() {
                 value={formData.location}
                 onChange={handleChange}
                 placeholder={t('auth.locationPlaceholder')}
-                list="ap-locations"
+                list="farmer-locations"
                 required
               />
-              <datalist id="ap-locations">
-                <option value="Andhra Pradesh" />
-                <option value="Vijayawada" />
-                <option value="Visakhapatnam" />
-                <option value="Guntur" />
-                <option value="Kurnool" />
-                <option value="Nellore" />
-                <option value="Rajahmundry" />
-                <option value="Tirupati" />
-                <option value="Kakinada" />
-                <option value="Anantapur" />
-                <option value="Eluru" />
-                <option value="Ongole" />
+              <datalist id="farmer-locations">
+                <option value="Rourkela, Odisha" />
+                <option value="Sundargarh, Odisha" />
+                <option value="Sambalpur, Odisha" />
+                <option value="Bhubaneswar, Odisha" />
+                <option value="Cuttack, Odisha" />
+                <option value="Balasore, Odisha" />
+                <option value="Berhampur, Odisha" />
+                <option value="Koraput, Odisha" />
+                <option value="Puri, Odisha" />
+                <option value="Vijayawada, Andhra Pradesh" />
+                <option value="Visakhapatnam, Andhra Pradesh" />
+                <option value="Guntur, Andhra Pradesh" />
+                <option value="Kurnool, Andhra Pradesh" />
               </datalist>
             </div>
 
             <div className="form-group">
               <label className="form-label">{t('auth.languageLabel')}</label>
               <select name="language" className="form-select" value={formData.language} onChange={handleChange}>
-                <option value="en">English</option>
-                <option value="hi">हिन्दी (Hindi)</option>
-                <option value="ta">தமிழ் (Tamil)</option>
-                <option value="te">తెలుగు (Telugu)</option>
-                <option value="bn">বাংলা (Bengali)</option>
-                <option value="mr">मराठी (Marathi)</option>
-                <option value="gu">ગુજરાતી (Gujarati)</option>
+                {SUPPORTED_LANGS.map((lang) => (
+                  <option key={lang.code} value={lang.code}>{lang.label}</option>
+                ))}
               </select>
             </div>
 

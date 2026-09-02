@@ -14,12 +14,17 @@ class FarmRiskRequest(BaseModel):
     location: Optional[str] = None
 
 
+from typing import Optional, List, Dict, Any
+
+
 class RiskFactorResponse(BaseModel):
     name: str
     score: int
     max_score: int
     level: str
     reason: str
+    key: Optional[str] = None
+    params: Optional[Dict[str, Any]] = None
 
 
 class FarmRiskResponse(BaseModel):
@@ -27,6 +32,7 @@ class FarmRiskResponse(BaseModel):
     risk_level: str
     factors: List[RiskFactorResponse]
     recommendations: List[str]
+    recommendation_objects: Optional[List[Any]] = None
 
 
 def resolve_authorized_user_id(
@@ -130,3 +136,77 @@ def get_farm_risk_post(
         db=db
     )
     return calculate_farm_health_risk(db=db, user_id=authorized_user_id, location=request.location)
+
+
+class InteractiveAdvisoryRequest(BaseModel):
+    query: Optional[str] = ""
+    location: Optional[str] = "Vijayawada, Andhra Pradesh"
+    crop_name: Optional[str] = "Chilli"
+    season: Optional[str] = "Kharif"
+    temperature: Optional[float] = 28.0
+    weather_data: Optional[dict] = None
+    distress_score: Optional[int] = None
+    user_id: Optional[int] = None
+    language: Optional[str] = "en"
+
+
+class InteractiveAdvisoryResponse(BaseModel):
+    advisory: str
+    explanation: Optional[str] = None
+    advisory_source: str = "ai"
+    query: Optional[str] = None
+    language: str = "en"
+
+
+@router.post("/advisory", response_model=InteractiveAdvisoryResponse)
+def get_interactive_advisory(
+    request: InteractiveAdvisoryRequest,
+    db: Session = Depends(get_db)
+):
+    """
+    Generate customized AI farm advisory or rule-based fallback advisory.
+    Responds to farmer queries with immediate deterministic fallback.
+    """
+    from services.gemini_service import generate_interactive_advisory
+
+    lang = request.language
+    crop = request.crop_name or "Chilli"
+    location = request.location or "Vijayawada, Andhra Pradesh"
+
+    if request.user_id:
+        user = db.query(User).filter(User.id == request.user_id).first()
+        if user:
+            if not lang and user.language:
+                lang = user.language
+            if user.preferred_crops and not request.crop_name:
+                if isinstance(user.preferred_crops, list) and len(user.preferred_crops) > 0:
+                    crop = str(user.preferred_crops[0])
+                elif isinstance(user.preferred_crops, str):
+                    crop = user.preferred_crops
+            if user.location and not request.location:
+                location = user.location
+
+    lang = lang or "en"
+    query_text = request.query or "General field management and distress prevention advice"
+
+    advisory_text, source = generate_interactive_advisory(
+        query=query_text,
+        location=location,
+        crop_name=crop,
+        season=request.season or "Kharif",
+        temperature=request.temperature or 28.0,
+        weather_data=request.weather_data,
+        distress_score=request.distress_score,
+        user_id=request.user_id,
+        language=lang,
+        return_source=True
+    )
+
+    return InteractiveAdvisoryResponse(
+        advisory=advisory_text,
+        explanation=advisory_text,
+        advisory_source=source,
+        query=request.query,
+        language=lang
+    )
+

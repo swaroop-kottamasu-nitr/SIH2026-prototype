@@ -16,7 +16,10 @@ function About() {
       <header className="landing-header">
         <div className="container">
           <div className="header-inner">
-            <Link to="/" className="logo">🌾 {t('brand')}</Link>
+            <Link to="/" className="logo" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <img src="/agridarshak-logo.jpeg" alt="AgriDarshak" style={{ width: 28, height: 28, borderRadius: 6, objectFit: 'cover' }} />
+              <span>{t('brand')}</span>
+            </Link>
             <nav className="header-nav">
               <select className="lang-select-inline" value={currentLang} onChange={(e) => { setStoredLanguage(e.target.value); i18n.changeLanguage(e.target.value); }} aria-label={t('common.language')}>
                 {SUPPORTED_LANGS.map((l) => <option key={l.code} value={l.code}>{l.label}</option>)}
@@ -36,47 +39,47 @@ function About() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <h1 className="hero-title" style={{ marginBottom: 'var(--space-6)' }}>About Smart Crop Advisory</h1>
+            <h1 className="hero-title" style={{ marginBottom: 'var(--space-6)' }}>{t('about.title')}</h1>
             <p className="hero-subtitle" style={{ marginBottom: 'var(--space-8)' }}>
-              An AI-based Smart Agriculture Assistance System that helps farmers make data-driven decisions using AI, ML, APIs, and real-time data to improve crop yield, profit, and sustainability.
+              {t('about.subtitle')}
             </p>
 
             <div className="about-sections" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-8)' }}>
               <div className="about-card">
                 <FiTarget size={28} style={{ color: 'var(--color-primary)', marginBottom: 'var(--space-3)' }} />
-                <h2 style={{ fontSize: 'var(--text-xl)', marginBottom: 'var(--space-2)' }}>Purpose</h2>
+                <h2 style={{ fontSize: 'var(--text-xl)', marginBottom: 'var(--space-2)' }}>{t('about.purposeTitle')}</h2>
                 <p style={{ color: 'var(--color-text-secondary)', lineHeight: 1.7 }}>
-                  To empower Indian farmers with AI-powered insights for soil analysis, crop recommendations, weather forecasting, market prices, and pest/disease detection—all in one platform.
+                  {t('about.purposeDesc')}
                 </p>
               </div>
 
               <div className="about-card">
                 <FiUsers size={28} style={{ color: 'var(--color-primary)', marginBottom: 'var(--space-3)' }} />
-                <h2 style={{ fontSize: 'var(--text-xl)', marginBottom: 'var(--space-2)' }}>How It Helps Farmers</h2>
+                <h2 style={{ fontSize: 'var(--text-xl)', marginBottom: 'var(--space-2)' }}>{t('about.howItHelpsTitle')}</h2>
                 <ul style={{ color: 'var(--color-text-secondary)', lineHeight: 1.8, paddingLeft: 'var(--space-6)' }}>
-                  <li>NPK & pH soil analysis with fertilizer recommendations</li>
-                  <li>Smart crop suggestions based on soil, weather, season, and market</li>
-                  <li>Real-time weather and climate risk alerts</li>
-                  <li>Live mandi prices and price trends</li>
-                  <li>AI-powered disease detection from crop/leaf images</li>
-                  <li>Soil type identification (manual or image upload)</li>
-                  <li>Multilingual support (Hindi, Tamil, Telugu, and more)</li>
+                  <li>{t('about.helpPoint1')}</li>
+                  <li>{t('about.helpPoint2')}</li>
+                  <li>{t('about.helpPoint3')}</li>
+                  <li>{t('about.helpPoint4')}</li>
+                  <li>{t('about.helpPoint5')}</li>
+                  <li>{t('about.helpPoint6')}</li>
+                  <li>{t('about.helpPoint7')}</li>
                 </ul>
               </div>
 
               <div className="about-card">
                 <FiCpu size={28} style={{ color: 'var(--color-primary)', marginBottom: 'var(--space-3)' }} />
-                <h2 style={{ fontSize: 'var(--text-xl)', marginBottom: 'var(--space-2)' }}>Technologies Used</h2>
+                <h2 style={{ fontSize: 'var(--text-xl)', marginBottom: 'var(--space-2)' }}>{t('about.techTitle')}</h2>
                 <p style={{ color: 'var(--color-text-secondary)', lineHeight: 1.7 }}>
-                  React, FastAPI, PyTorch (MobileNetV2 for disease detection), Google Gemini AI, Open-Meteo Weather API, data.gov.in for market prices, SQLite/PostgreSQL.
+                  {t('about.techDesc')}
                 </p>
               </div>
 
               <div className="about-card support-card">
                 <FiHeart size={28} style={{ color: 'var(--color-primary)', marginBottom: 'var(--space-3)' }} />
-                <h2 style={{ fontSize: 'var(--text-xl)', marginBottom: 'var(--space-2)' }}>Support & Project Commitment</h2>
+                <h2 style={{ fontSize: 'var(--text-xl)', marginBottom: 'var(--space-2)' }}>{t('about.supportTitle')}</h2>
                 <p style={{ color: 'var(--color-text-secondary)', lineHeight: 1.7, fontWeight: 500 }}>
-                  If any help is needed, we will help. Our team is committed to supporting farmers and improving this platform.
+                  {t('about.supportDesc')}
                 </p>
               </div>
             </div>

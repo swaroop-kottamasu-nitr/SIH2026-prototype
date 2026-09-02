@@ -1,98 +1,121 @@
 @echo off
-REM Troubleshooting script - shows what's running and helps diagnose issues
+setlocal enabledelayedexpansion
 
+REM ============================================================
+REM AgriDarshak - System Diagnostic Tool
+REM ============================================================
+
+TITLE AgriDarshak - System Diagnostics
+
+echo.
 echo ============================================================
-echo Smart Crop Advisory System - Diagnostic Tool
+echo    AGRIDARSHAK - SYSTEM DIAGNOSTICS REPORT
 echo ============================================================
 echo.
 
-echo 1. Checking Python installation...
-python --version
-if %errorlevel% neq 0 (
-    echo   [FAIL] Python not found in PATH
-) else (
-    echo   [OK] Python is installed
-)
-echo.
+cd /d "%~dp0"
 
-echo 2. Checking Node.js installation...
-node --version
-if %errorlevel% neq 0 (
-    echo   [FAIL] Node.js not found in PATH
-) else (
-    echo   [OK] Node.js is installed
+REM 1. Port 8000 (Backend)
+echo [1/6] Checking Port 8000 (Backend)...
+set "PORT_8000_IN_USE=0"
+set "PORT_8000_PID="
+for /f "tokens=5" %%a in ('netstat -ano ^| findstr ":8000" ^| findstr /i "LISTENING"') do (
+    set "PORT_8000_IN_USE=1"
+    set "PORT_8000_PID=%%a"
 )
-echo.
-
-echo 3. Checking npm installation...
-npm --version
-if %errorlevel% neq 0 (
-    echo   [FAIL] npm not found in PATH
+if "!PORT_8000_IN_USE!"=="1" (
+    echo       [ACTIVE] Port 8000 is occupied by PID !PORT_8000_PID! - Backend is running
 ) else (
-    echo   [OK] npm is installed
-)
-echo.
-
-echo 4. Checking if Backend is running (port 8000)...
-netstat -ano | findstr :8000
-if %errorlevel% neq 0 (
-    echo   [INFO] No process running on port 8000
-) else (
-    echo   [OK] Backend is running
-)
-echo.
-
-echo 5. Checking if Frontend is running (port 5173)...
-netstat -ano | findstr :5173
-if %errorlevel% neq 0 (
-    echo   [INFO] No process running on port 5173
-) else (
-    echo   [OK] Frontend is running
-)
-echo.
-
-echo 6. Checking project structure...
-if exist "backend\app.py" (
-    echo   [OK] Backend files found
-) else (
-    echo   [FAIL] Backend files missing
+    echo       [FREE]   Port 8000 is currently available
 )
 
-if exist "frontend\package.json" (
-    echo   [OK] Frontend files found
-) else (
-    echo   [FAIL] Frontend files missing
+REM 2. Port 5173 (Frontend)
+echo [2/6] Checking Port 5173 (Frontend)...
+set "PORT_5173_IN_USE=0"
+set "PORT_5173_PID="
+for /f "tokens=5" %%a in ('netstat -ano ^| findstr ":5173" ^| findstr /i "LISTENING"') do (
+    set "PORT_5173_IN_USE=1"
+    set "PORT_5173_PID=%%a"
 )
-echo.
-
-echo 7. Checking database...
-if exist "backend\crop_advisory.db" (
-    echo   [OK] Database file exists
+if "!PORT_5173_IN_USE!"=="1" (
+    echo       [ACTIVE] Port 5173 is occupied by PID !PORT_5173_PID! - Frontend is running
 ) else (
-    echo   [WARN] Database file not found (will be created on first run)
+    echo       [FREE]   Port 5173 is currently available
 )
-echo.
 
-echo 8. Checking backend dependencies...
-if exist "backend\venv\" (
-    echo   [OK] Virtual environment exists
+REM 3. Python Environment & Backend Dependencies
+echo [3/6] Checking Backend Python Environment...
+set "PYTHON_EXE="
+if exist "backend\.venv\Scripts\python.exe" (
+    set "PYTHON_EXE=%CD%\backend\.venv\Scripts\python.exe"
+    echo       [OK] Found virtual environment at backend\.venv
+)
+if not defined PYTHON_EXE if exist "backend\venv\Scripts\python.exe" (
+    set "PYTHON_EXE=%CD%\backend\venv\Scripts\python.exe"
+    echo       [OK] Found virtual environment at backend\venv
+)
+if not defined PYTHON_EXE (
+    where python >nul 2>&1
+    if !errorlevel! equ 0 (
+        set "PYTHON_EXE=python"
+        echo       [WARN] Using system Python - no isolated .venv detected
+    ) else (
+        echo       [FAIL] Python not found in PATH!
+    )
+)
+
+if defined PYTHON_EXE (
+    "!PYTHON_EXE!" -c "import fastapi, uvicorn, sqlalchemy, pydantic" >nul 2>&1
+    if !errorlevel! equ 0 (
+        echo       [OK] Core backend dependencies installed - FastAPI, Uvicorn, SQLAlchemy, Pydantic
+    ) else (
+        echo       [FAIL] Missing backend dependencies. Run 'pip install -r backend\requirements.txt'
+    )
+)
+
+REM 4. Node Environment & Frontend Dependencies
+echo [4/6] Checking Frontend Environment...
+where node >nul 2>&1
+if %errorlevel% equ 0 (
+    for /f "tokens=*" %%v in ('node -v') do echo       [OK] Node.js installed - version %%v
 ) else (
-    echo   [WARN] Virtual environment not found (will be created)
+    echo       [FAIL] Node.js not found in PATH!
 )
-echo.
 
-echo 9. Checking frontend dependencies...
 if exist "frontend\node_modules\" (
-    echo   [OK] Node modules installed
+    echo       [OK] Frontend dependencies installed - frontend\node_modules exists
 ) else (
-    echo   [WARN] Node modules not installed (will be installed)
+    echo       [WARN] Frontend node_modules missing. Run 'npm install' inside frontend\
 )
-echo.
 
-echo ============================================================
-echo Diagnostic Complete
-echo ============================================================
+REM 5. Environment & API Configuration
+echo [5/6] Checking Configuration (.env)...
+if exist ".env" (
+    echo       [OK] .env file exists in project root
+    findstr /i "GEMINI_API_KEY" .env >nul 2>&1
+    if !errorlevel! equ 0 (
+        echo       [OK] GEMINI_API_KEY configuration entry detected
+    ) else (
+        echo       [INFO] GEMINI_API_KEY not configured. AgriDarshak will use deterministic Smart Advisory fallback.
+    )
+) else (
+    echo       [INFO] No .env file found. System runs with default SQLite and Smart Advisory fallback mode.
+)
+
+REM 6. SQLite Database Connection
+echo [6/6] Checking Database Connection...
+if defined PYTHON_EXE (
+    "!PYTHON_EXE!" -c "import sys, os; sys.path.insert(0, os.path.abspath('backend')); from database import engine; conn = engine.connect(); print('      [OK] Successfully connected to SQLite database'); conn.close()" 2>nul
+    if !errorlevel! neq 0 (
+        echo       [FAIL] Database connection error or missing tables.
+    )
+) else (
+    echo       [SKIP] Cannot test database connection - Python unavailable
+)
+
 echo.
-echo If you see any [FAIL] marks above, those need to be fixed.
+echo ============================================================
+echo    DIAGNOSTICS COMPLETED
+echo ============================================================
 echo.
 pause

@@ -41,7 +41,9 @@ class CropInfo(BaseModel):
 class CropRecommendationResponse(BaseModel):
     recommended_crops: List
     explanation: str
+    advisory: Optional[str] = None
     total_recommendations: int
+    advisory_source: str = "ai"
 
 
 @router.post("/recommend", response_model=CropRecommendationResponse)
@@ -74,6 +76,8 @@ def recommend_crops(request: CropRecommendationRequest, db: Session = Depends(ge
         user_id=request.user_id,
         db=db,
     )
+    if isinstance(result, dict):
+        result["advisory"] = result.get("explanation", "")
     return result
 
 @router.get("/all")

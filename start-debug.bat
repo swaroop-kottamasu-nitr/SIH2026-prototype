@@ -1,178 +1,140 @@
 @echo off
-REM DEBUG VERSION - This will show all errors and not close
-REM Use this to see what's happening
+setlocal enabledelayedexpansion
 
-title Smart Crop Advisory - Debug Mode
-color 0C
+REM ============================================================
+REM AgriDarshak - Debug Mode Startup (Verbose Output)
+REM ============================================================
+
+TITLE AgriDarshak - Debug Mode
 
 echo.
 echo ============================================================
-echo    DEBUG MODE - Checking what's happening...
+echo    AGRIDARSHAK - DEBUG MODE STARTUP
 echo ============================================================
 echo.
 
-REM Navigate to project root
 cd /d "%~dp0"
-echo Current directory: %CD%
+
+REM Step 1: Safe Port Cleanup
+echo [DEBUG] Step 1: Checking for active ports 8000 and 5173...
+for /f "tokens=5" %%a in ('netstat -ano ^| findstr ":8000" ^| findstr /i "LISTENING"') do (
+    if not "%%a"=="0" (
+        echo [DEBUG] Found process %%a on port 8000. Terminating...
+        taskkill /F /PID %%a >nul 2>&1
+    )
+)
+
+for /f "tokens=5" %%a in ('netstat -ano ^| findstr ":5173" ^| findstr /i "LISTENING"') do (
+    if not "%%a"=="0" (
+        echo [DEBUG] Found process %%a on port 5173. Terminating...
+        taskkill /F /PID %%a >nul 2>&1
+    )
+)
+echo [DEBUG] Ports 8000 and 5173 are clear.
 echo.
 
-REM ============================================================
-REM CHECK PYTHON
-REM ============================================================
-echo [CHECK 1] Testing Python...
-python --version
-if %errorlevel% neq 0 (
-    echo ERROR: Python not found!
-    echo Make sure Python is installed and added to PATH
-    pause
-    exit /b 1
+REM Step 2: Detect & Validate Python Environment
+echo [DEBUG] Step 2: Locating Python virtual environment...
+set "PYTHON_EXE="
+
+if exist "backend\.venv\Scripts\python.exe" (
+    set "PYTHON_EXE=%CD%\backend\.venv\Scripts\python.exe"
+    echo [DEBUG] Detected backend\.venv\Scripts\python.exe
 )
-echo Python: OK
-echo.
-
-REM ============================================================
-REM CHECK NODE
-REM ============================================================
-echo [CHECK 2] Testing Node.js...
-node --version
-if %errorlevel% neq 0 (
-    echo ERROR: Node.js not found!
-    echo Make sure Node.js is installed and added to PATH
-    pause
-    exit /b 1
+if not defined PYTHON_EXE if exist "backend\venv\Scripts\python.exe" (
+    set "PYTHON_EXE=%CD%\backend\venv\Scripts\python.exe"
+    echo [DEBUG] Detected backend\venv\Scripts\python.exe
 )
-echo Node.js: OK
-echo.
-
-REM ============================================================
-REM CHECK PROJECT STRUCTURE
-REM ============================================================
-echo [CHECK 3] Checking project structure...
-
-if not exist "backend\" (
-    echo ERROR: backend folder not found!
-    echo Make sure you're running this from the project root
-    pause
-    exit /b 1
-)
-echo Backend folder: OK
-
-if not exist "frontend\" (
-    echo ERROR: frontend folder not found!
-    echo Make sure you're running this from the project root
-    pause
-    exit /b 1
-)
-echo Frontend folder: OK
-
-if not exist "backend\app.py" (
-    echo ERROR: backend\app.py not found!
-    pause
-    exit /b 1
-)
-echo Backend app.py: OK
-
-if not exist "frontend\package.json" (
-    echo ERROR: frontend\package.json not found!
-    pause
-    exit /b 1
-)
-echo Frontend package.json: OK
-echo.
-
-REM ============================================================
-REM CHECK BACKEND DEPENDENCIES
-REM ============================================================
-echo [CHECK 4] Checking backend setup...
-cd backend
-
-echo Testing database initialization...
-python init_database.py
-if %errorlevel% neq 0 (
-    echo ERROR: Database initialization failed!
-    echo Check the errors above
-    cd ..
-    pause
-    exit /b 1
-)
-echo Database: OK
-cd ..
-echo.
-
-REM ============================================================
-REM CHECK FRONTEND DEPENDENCIES
-REM ============================================================
-echo [CHECK 5] Checking frontend setup...
-cd frontend
-
-if not exist "node_modules\" (
-    echo Node modules not found. Installing...
-    echo This may take 2-5 minutes...
-    call npm install
-    if %errorlevel% neq 0 (
-        echo ERROR: npm install failed!
-        cd ..
+if not defined PYTHON_EXE (
+    echo [DEBUG] Virtual environment not found. Checking system python...
+    where python
+    if !errorlevel! neq 0 (
+        echo [ERROR] Python not found in system PATH.
         pause
         exit /b 1
     )
+    echo [DEBUG] Creating virtual environment at backend\.venv...
+    cd backend
+    python -m venv .venv
+    cd ..
+    set "PYTHON_EXE=%CD%\backend\.venv\Scripts\python.exe"
 )
-echo Frontend dependencies: OK
-cd ..
+
+echo [DEBUG] Python binary: "!PYTHON_EXE!"
+"!PYTHON_EXE!" --version
+
+echo [DEBUG] Verifying backend dependencies...
+"!PYTHON_EXE!" -c "import fastapi, uvicorn, sqlalchemy, pydantic; print('[DEBUG] Core packages verified.')"
+if !errorlevel! neq 0 (
+    echo [DEBUG] Installing missing dependencies...
+    "!PYTHON_EXE!" -m pip install -r backend\requirements.txt
+)
+
+echo [DEBUG] Starting FastAPI backend with LOG_LEVEL=debug...
+cd /d "%~dp0backend"
+start "AgriDarshak Backend [DEBUG] - Port 8000" cmd /k "title AgriDarshak Backend [DEBUG] && color 0B && set LOG_LEVEL=debug && "!PYTHON_EXE!" -m uvicorn app:app --host 0.0.0.0 --port 8000 --reload --log-level debug"
+cd /d "%~dp0"
+
 echo.
 
-REM ============================================================
-REM ALL CHECKS PASSED
-REM ============================================================
+REM Step 3: Frontend Environment
+echo [DEBUG] Step 3: Validating Frontend Node environment...
+where node
+where npm
+if %errorlevel% neq 0 (
+    echo [ERROR] Node.js or npm not found in system PATH.
+    pause
+    exit /b 1
+)
+
+if not exist "frontend\node_modules\" (
+    echo [DEBUG] Installing npm packages in frontend...
+    cd frontend
+    call npm install
+    cd ..
+)
+
+echo [DEBUG] Starting Vite frontend server...
+cd /d "%~dp0frontend"
+start "AgriDarshak Frontend [DEBUG] - Port 5173" cmd /k "title AgriDarshak Frontend [DEBUG] && color 0E && npm run dev -- --debug"
+cd /d "%~dp0"
+
+echo.
+
+REM Step 4: Health polling
+echo [DEBUG] Step 4: Polling service health...
+set "BACKEND_READY=0"
+for /L %%i in (1,1,60) do (
+    if "!BACKEND_READY!"=="0" (
+        "!PYTHON_EXE!" -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=1)" >nul 2>&1
+        if !errorlevel! equ 0 (
+            set "BACKEND_READY=1"
+            echo [DEBUG] Backend responded with HTTP 200 after %%i seconds.
+        ) else (
+            ping 127.0.0.1 -n 2 >nul
+        )
+    )
+)
+
+set "FRONTEND_READY=0"
+for /L %%i in (1,1,60) do (
+    if "!FRONTEND_READY!"=="0" (
+        "!PYTHON_EXE!" -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:5173', timeout=1)" >nul 2>&1
+        if !errorlevel! equ 0 (
+            set "FRONTEND_READY=1"
+            echo [DEBUG] Frontend responded with HTTP 200 after %%i seconds.
+        ) else (
+            ping 127.0.0.1 -n 2 >nul
+        )
+    )
+)
+
+echo.
 echo ============================================================
-echo    ALL CHECKS PASSED!
+echo [DEBUG] All services running in debug mode.
+echo - Web: http://127.0.0.1:5173
+echo - API Docs: http://127.0.0.1:8000/docs
 echo ============================================================
 echo.
-echo Your system is ready to run the application.
-echo.
-echo Now let's try starting the servers...
-echo.
+start http://127.0.0.1:5173
 pause
-
-REM ============================================================
-REM START BACKEND
-REM ============================================================
-echo.
-echo Starting Backend Server...
-cd backend
-start "Backend Server" cmd /k "title Backend && color 0B && python app.py"
-cd ..
-echo Backend started in new window
-timeout /t 3 /nobreak >nul
-echo.
-
-REM ============================================================
-REM START FRONTEND
-REM ============================================================
-echo Starting Frontend Server...
-cd frontend
-start "Frontend Server" cmd /k "title Frontend && color 0E && npm run dev"
-cd ..
-echo Frontend started in new window
-timeout /t 3 /nobreak >nul
-echo.
-
-REM ============================================================
-REM DONE
-REM ============================================================
-echo ============================================================
-echo    SERVERS STARTED!
-echo ============================================================
-echo.
-echo Backend:  http://localhost:8000
-echo Frontend: http://localhost:5173
-echo.
-echo Two windows have opened - keep them open!
-echo.
-echo Opening browser in 5 seconds...
-timeout /t 5 /nobreak >nul
-
-start http://localhost:5173
-
-echo.
-echo Done! Press any key to close this debug window...
-pause >nul

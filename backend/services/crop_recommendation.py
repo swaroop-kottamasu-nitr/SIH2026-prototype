@@ -224,9 +224,10 @@ def get_crop_recommendations(
         name: market_data.get(name) for name in [c["name"] for c in recommended_crops]
     }
 
-    # 9. Generate advisory from structured data (Gemini does NOT decide — it explains)
+    # 9. Generate advisory from structured data (Gemini or deterministic localized fallback)
+    advisory_source = "ai"
     if recommended_crops:
-        explanation = generate_crop_recommendation_explanation(
+        explanation, advisory_source = generate_crop_recommendation_explanation(
             recommended_crops=recommended_crops,
             soil_type=soil_type,
             season=season,
@@ -236,8 +237,10 @@ def get_crop_recommendations(
             weather_forecast=analysis_weather,
             market_data=analysis_market,
             climate_alerts=climate_alerts if climate_alerts else None,
+            return_source=True
         )
     else:
+        advisory_source = "fallback"
         explanation = (
             "No crops matched all analysis criteria (soil, weather, season, market). "
             "Consider adjusting soil type or location, or consult a local agricultural expert."
@@ -247,6 +250,7 @@ def get_crop_recommendations(
         "recommended_crops": recommended_crops,
         "explanation": explanation,
         "total_recommendations": len(recommended_crops),
+        "advisory_source": advisory_source,
         "analysis_context": {
             "soil": analysis_soil,
             "weather": analysis_weather,

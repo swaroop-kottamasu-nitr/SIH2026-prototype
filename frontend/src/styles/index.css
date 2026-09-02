@@ -1,37 +1,46 @@
 /* ============================================
-   Smart Crop Advisory - Enterprise Design System
+   AgriDarshak - Enterprise Design System
    ============================================ */
 
 :root {
-  /* Primary palette - Trust & growth */
-  --color-primary: #0d9488;
-  --color-primary-hover: #0f766e;
-  --color-primary-light: #5eead4;
-  --color-primary-muted: rgba(13, 148, 136, 0.12);
+  /* ============================================
+     Centralized Brand Color System - AgriDarshak
+     ============================================ */
+  --brand-primary: #1F7A45;
+  --brand-secondary: #5FAF45;
+  --brand-accent: #D4A72C;
+  --brand-background: #F7F9F4;
+  --brand-text: #18322A;
+  --brand-card: #FFFFFF;
+
+  /* Aliases for system compatibility */
+  --color-primary: var(--brand-primary);
+  --color-primary-hover: #176337;
+  --color-primary-light: var(--brand-secondary);
+  --color-primary-muted: rgba(31, 122, 69, 0.12);
   
-  /* Secondary - Professional slate */
-  --color-secondary: #475569;
-  --color-secondary-light: #64748b;
+  --color-secondary: var(--brand-secondary);
+  --color-secondary-light: #7ccb63;
   
-  /* Accent - Refined emphasis */
-  --color-accent: #f59e0b;
-  --color-accent-muted: rgba(245, 158, 11, 0.12);
+  --color-accent: var(--brand-accent);
+  --color-accent-muted: rgba(212, 167, 44, 0.15);
   
-  /* Semantic */
+  /* Semantic - Maintained Risk Severity Levels */
   --color-success: #059669;
   --color-warning: #d97706;
   --color-error: #dc2626;
   --color-info: #0284c7;
   
-  /* Neutrals */
-  --color-surface: #ffffff;
+  /* Neutrals & Cards */
+  --color-surface: var(--brand-card);
   --color-surface-elevated: #ffffff;
-  --color-background: #f8fafc;
-  --color-background-alt: #f1f5f9;
+  --color-background: var(--brand-background);
+  --color-background-alt: #EDF2E8;
+  --color-border: rgba(0, 0, 0, 0.08);
   
-  --color-text: #0f172a;
-  --color-text-secondary: #475569;
-  --color-text-tertiary: #94a3b8;
+  --color-text: var(--brand-text);
+  --color-text-secondary: #3b5c50;
+  --color-text-tertiary: #6b8a7f;
   
   /* Elevation - Soft depth */
   --shadow-xs: 0 1px 2px rgba(15, 23, 42, 0.04);
@@ -59,8 +68,8 @@
   --radius-xl: 16px;
   --radius-full: 9999px;
   
-  /* Typography */
-  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  /* Typography - Enhanced for Odia and Pan-Indian Multilingual Rendering */
+  --font-sans: 'Plus Jakarta Sans', 'Nirmala UI', 'Kalinga', 'Oriya Sangam MN', 'Noto Sans Oriya', 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
   
   --text-xs: 0.75rem;
   --text-sm: 0.875rem;
@@ -100,6 +109,9 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
 }
 
 body {
@@ -110,6 +122,9 @@ body {
   background: var(--color-background);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
 }
 
 /* Typography */
@@ -395,4 +410,18 @@ h6 { font-size: var(--text-base); }
     --text-3xl: 1.5rem;
     --text-2xl: 1.25rem;
   }
+}
+
+/* Accessibility: High-Contrast Focus Visible Rings for Keyboard Navigation */
+:focus-visible {
+  outline: 2px solid var(--brand-primary);
+  outline-offset: 2px;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--brand-primary);
+  outline-offset: 2px;
 }

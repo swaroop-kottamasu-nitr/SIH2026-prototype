@@ -120,7 +120,7 @@ function Weather({ user, onLogout, onUserUpdate }) {
               >
                 <div className="weather-main">
                   <div className="temp-display">{Math.round(weather.main.temp)}°C</div>
-                  <div className="weather-desc">{weather.weather?.[0]?.description || 'Clear'}</div>
+                  <div className="weather-desc">{t(`weather.conditions.${weather.weather?.[0]?.main?.toLowerCase()}`, { defaultValue: weather.weather?.[0]?.description || t('weather.clear') })}</div>
                 </div>
                 <div className="weather-details">
                   <div className="detail-item"><span className="param-label">{t('weather.humidity')}</span><span className="param-value">{weather.main.humidity}%</span></div>

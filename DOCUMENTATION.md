@@ -1,7 +1,7 @@
-# 🌾 Smart Crop Advisory System — Project Documentation
+# 🌾 AgriDarshak — Project Documentation
 
-> **AI-powered agricultural decision support system for Indian farmers**
-> Version: 1.0.0 | Built for: SIH Evaluation
+> **AI-powered agricultural decision support & early-warning system for Indian farmers**
+> Version: 1.0.0 | Built for: SIH 2026 Evaluation
 
 ---
 
@@ -26,7 +26,7 @@
 
 ## 1. Project Overview
 
-The **Smart Crop Advisory System** is an intelligent, AI-powered web platform designed to help Indian farmers make data-driven agricultural decisions. The system combines:
+The **AgriDarshak** platform is an intelligent, AI-powered web system designed to help Indian farmers make data-driven agricultural decisions. The system combines:
 
 - **Machine Learning** for plant disease detection and soil type classification
 - **Google Gemini 2.5 Flash** (LLM) for generating structured, farmer-friendly advisories
@@ -636,4 +636,4 @@ stop.bat
 
 ---
 
-*Documentation generated: March 2026 | Smart Crop Advisory System v1.0.0*
+*Documentation generated: March 2026 | AgriDarshak v1.0.0*

@@ -32,7 +32,7 @@ function CropRecommendation({ user, onLogout, onUserUpdate }) {
       })
       setResult(res.data)
     } catch {
-      alert('Error getting recommendations. Please try again.')
+      alert(t('crop.errorAlert'))
     } finally {
       setLoading(false)
     }
@@ -56,7 +56,17 @@ function CropRecommendation({ user, onLogout, onUserUpdate }) {
                     <label className="form-label">{t('crop.soilType')}</label>
                     <select className="form-select" value={formData.soil_type} onChange={e => setFormData({ ...formData, soil_type: e.target.value })} required>
                       <option value="">{t('common.select')}</option>
-                      {['Clay', 'Sandy', 'Loamy', 'Silty', 'Red Soil', 'Black Soil', 'Alluvial'].map(s => <option key={s} value={s}>{s}</option>)}
+                      {[
+                        { value: 'Clay', key: 'clay' },
+                        { value: 'Sandy', key: 'sandy' },
+                        { value: 'Loamy', key: 'loamy' },
+                        { value: 'Silty', key: 'silty' },
+                        { value: 'Red Soil', key: 'redSoil' },
+                        { value: 'Black Soil', key: 'blackSoil' },
+                        { value: 'Alluvial', key: 'alluvial' }
+                      ].map(s => (
+                        <option key={s.value} value={s.value}>{t(`soilTypes.${s.key}`, { defaultValue: s.value })}</option>
+                      ))}
                     </select>
                   </div>
                   <div className="form-group">
@@ -89,7 +99,7 @@ function CropRecommendation({ user, onLogout, onUserUpdate }) {
                     <div className="crops-grid" style={{ marginTop: 'var(--space-6)' }}>
                       {result.recommended_crops.map((crop, i) => (
                         <div key={i} className="crop-card">
-                          <h3>{crop.name}</h3>
+                          <h3>{t(`crops.${crop.name.toLowerCase().replace(/[^a-z]/g, '')}`, { defaultValue: crop.name })}</h3>
                           <p className="local-name" style={{ color: 'var(--color-text-tertiary)', fontSize: 'var(--text-sm)' }}>{crop.local_name}</p>
                           <div className="crop-details">
                             <div><span className="param-label">{t('crop.duration')}</span><br /><span className="param-value">{crop.growing_duration}</span></div>
@@ -99,8 +109,7 @@ function CropRecommendation({ user, onLogout, onUserUpdate }) {
                       ))}
                     </div>
                     <div className="advisory-section" style={{ marginTop: 'var(--space-6)' }}>
-                      <h3>{t('common.aiAdvisory')}</h3>
-                      <AdvisoryMarkdown content={result.explanation} className="advisory-content" language={getEffectiveLanguage(user)} />
+                      <AdvisoryMarkdown content={result.explanation} className="advisory-content" language={getEffectiveLanguage(user)} source={result.advisory_source || 'ai'} />
                     </div>
                   </>
                 ) : (

@@ -1,14 +1,14 @@
-# 🌾 Project Architecture: Smart Crop Advisory & Farmer Distress Early-Warning System
+# 🌾 Project Architecture: AgriDarshak (Farmer Distress Early-Warning System)
 
 > **SIH 2026 Platform Technical Architecture & Audit**  
-> **Repository:** Smart Crop Advisory System  
-> **Status:** Baseline Audited & Operational
+> **Platform:** AgriDarshak  
+> **Status:** Audited & Operational
 
 ---
 
 ## 1. System Overview & Vision
 
-The **Smart Crop Advisory & Farmer Distress Early-Warning System** is an AI-powered agricultural decision-support and proactive crisis mitigation platform designed for Indian farmers. 
+The **AgriDarshak** platform is an AI-powered agricultural decision-support and proactive crisis mitigation system designed for Indian farmers. 
 
 The system transitions from isolated farming utilities (soil testing, weather forecast, disease detection, mandi price tables) into an **integrated early-warning platform** that actively monitors environmental, agronomic, and financial distress signals to alert farmers before catastrophic crop failure or financial losses occur.
 

@@ -9,7 +9,15 @@ import AdvisoryMarkdown from '../components/AdvisoryMarkdown'
 import { FiArrowLeft } from 'react-icons/fi'
 import './FeaturePage.css'
 
-const SOIL_TYPES = ['Clay', 'Sandy', 'Loamy', 'Silty', 'Black Soil', 'Red Soil', 'Alluvial']
+const SOIL_TYPES = [
+  { value: 'Clay', key: 'clay' },
+  { value: 'Sandy', key: 'sandy' },
+  { value: 'Loamy', key: 'loamy' },
+  { value: 'Silty', key: 'silty' },
+  { value: 'Black Soil', key: 'blackSoil' },
+  { value: 'Red Soil', key: 'redSoil' },
+  { value: 'Alluvial', key: 'alluvial' }
+]
 
 function SoilAnalysis({ user, onLogout, onUserUpdate }) {
   const { t } = useTranslation()
@@ -59,7 +67,7 @@ function SoilAnalysis({ user, onLogout, onUserUpdate }) {
       setResult(res.data)
       axios.get(`/api/soil/history/${user.id}`).then(r => setHistory(r.data.analyses || []))
     } catch (err) {
-      setError(err.response?.data?.detail || 'Analysis failed. Check your inputs.')
+      setError(err.response?.data?.detail || t('soil.analysisFailed'))
     } finally {
       setLoading(false)
     }
@@ -102,7 +110,7 @@ function SoilAnalysis({ user, onLogout, onUserUpdate }) {
                 {history.map((a) => (
                   <div key={a.id} className="param-item">
                     <span className="param-label">{new Date(a.date).toLocaleDateString()}</span>
-                    <span className="param-value">{a.soil_type || '—'} · {a.soil_health}</span>
+                    <span className="param-value">{a.soil_type ? t(`soilTypes.${a.soil_type.toLowerCase().replace(/[^a-z]/g, '')}`, { defaultValue: a.soil_type }) : '—'} · {t(`soil.healthStatus.${a.soil_health?.toLowerCase()}`, { defaultValue: a.soil_health })}</span>
                   </div>
                 ))}
               </div>
@@ -122,7 +130,9 @@ function SoilAnalysis({ user, onLogout, onUserUpdate }) {
                     <label className="form-label">{t('soil.soilType')}</label>
                     <select name="soil_type" className="form-control" value={formData.soil_type} onChange={handleChange}>
                       <option value="">{t('soil.soilTypeOptional')}</option>
-                      {SOIL_TYPES.map(t => <option key={t} value={t}>{t}</option>)}
+                      {SOIL_TYPES.map(st => (
+                        <option key={st.value} value={st.value}>{t(`soilTypes.${st.key}`, { defaultValue: st.value })}</option>
+                      ))}
                     </select>
                   </div>
                   <div className="form-group">
@@ -170,14 +180,14 @@ function SoilAnalysis({ user, onLogout, onUserUpdate }) {
                 <div className="result-header">
                   <h2>{t('soil.results')}</h2>
                   <span className="btn btn-secondary" style={{ backgroundColor: getHealthColor(result.soil_health), color: 'white', border: 'none' }}>
-                    {result.soil_health}
+                    {t(`soil.healthStatus.${result.soil_health.toLowerCase()}`, { defaultValue: result.soil_health })}
                   </span>
                 </div>
                 <div className="soil-params">
                   <h3>{t('soil.parameters')}</h3>
                   <div className="params-grid">
                     {result.soil_parameters.soil_type && (
-                      <div className="param-item"><span className="param-label">{t('soil.soilType')}</span><span className="param-value">{result.soil_parameters.soil_type}</span></div>
+                      <div className="param-item"><span className="param-label">{t('soil.soilType')}</span><span className="param-value">{t(`soilTypes.${result.soil_parameters.soil_type.toLowerCase().replace(/[^a-z]/g, '')}`, { defaultValue: result.soil_parameters.soil_type })}</span></div>
                     )}
                     <div className="param-item"><span className="param-label">N</span><span className="param-value">{result.soil_parameters.nitrogen} kg/ha</span></div>
                     <div className="param-item"><span className="param-label">P</span><span className="param-value">{result.soil_parameters.phosphorus} kg/ha</span></div>
@@ -191,9 +201,8 @@ function SoilAnalysis({ user, onLogout, onUserUpdate }) {
                     {result.fertilizer_recommendations.map((f, i) => <li key={i}>{f}</li>)}
                   </ul>
                 </div>
-                <div className="advisory-section">
-                  <h3>{t('common.aiAdvisory')}</h3>
-                  <AdvisoryMarkdown content={result.explanation} className="gemini-advisory advisory-content" language={getEffectiveLanguage(user)} />
+                <div className="advisory-section" style={{ marginTop: 'var(--space-6)' }}>
+                  <AdvisoryMarkdown content={result.explanation} className="gemini-advisory advisory-content" language={getEffectiveLanguage(user)} source={result.advisory_source || 'ai'} />
                 </div>
               </motion.div>
             )}
