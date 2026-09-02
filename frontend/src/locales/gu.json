@@ -48,7 +48,9 @@
     "irrigation": "પિયત સમયપત્રક",
     "crop_rotation": "પાક ફેરબદલી આયોજન",
     "inputs": "બિયારણ અને ખાતર કેન્દ્રો",
-    "storage": "કોલ્ડ સ્ટોરેજ અને ગોડાઉન"
+    "storage": "કોલ્ડ સ્ટોરેજ અને ગોડાઉન",
+    "labour": "ખેત મજૂર બુકિંગ",
+    "schemes": "સરકારી યોજનાઓ અને સબસિડી"
   },
   "landing": {
     "title": "AI-આધારિત સ્માર્ટ કૃષિ બુદ્ધિમત્તા",
@@ -677,5 +679,71 @@
     "up": "વધારો",
     "down": "ઘટાડો",
     "stable": "સ્થિર"
+  },
+  "labour": {
+    "title": "ખેત મજૂર બુકિંગ",
+    "subtitle": "સ્થાનિક ખેત મજૂરો અને લણણી ટીમો સાથે જોડાઓ",
+    "available_workers": "ઉપલબ્ધ મજૂરો",
+    "skills": "કૌશલ્ય",
+    "daily_wage": "દૈનિક મજૂરી",
+    "location": "સ્થળ",
+    "availability": "ઉપલબ્ધતા",
+    "available": "ઉપલબ્ધ",
+    "limited": "મર્યાદિત",
+    "book_now": "મજૂર બુક કરો",
+    "filter_by_skill": "કૌશલ્ય મુજબ ફિલ્ટર:",
+    "filter_all": "બધા કૌશલ્ય",
+    "booking_request": "બુકિંગ વિનંતી",
+    "date": "કામની તારીખ",
+    "duration_days": "સમયગાળો (દિવસ)",
+    "task_description": "કામની વિગત",
+    "contact_phone": "સંપર્ક ફોન",
+    "submit_request": "ડેમો બુકિંગ કરો",
+    "demo_badge": "ડેમો માહિતી",
+    "demo_disclaimer": "આ ડેમો માહિતી છે. વાસ્તવિક ઉપલબ્ધતા બદલાઈ શકે છે.",
+    "request_confirmed": "ડેમો બુકિંગ નોંધાયું",
+    "request_pending": "પેન્ડિંગ",
+    "request_rejected": "અસ્વીકાર્ય",
+    "noWorkers": "મજૂરો ઉપલબ્ધ નથી.",
+    "askAiBtn": "મજૂરી અંગે AgriDarshak ને પૂછો",
+    "skill": {
+      "harvesting": "લણણી",
+      "irrigation": "પિયત",
+      "pesticide": "દવા છંટકાવ",
+      "planting": "વાવણી અને રોપણી",
+      "weeding": "નિંદામણ",
+      "fertilizer": "ખાતર વ્યવસ્થા"
+    }
+  },
+  "scheme": {
+    "title": "સરકારી કલ્યાણકારી યોજનાઓ",
+    "subtitle": "સબસિડી, પાક વીમો, કેસીસી ધિરાણ અને જમીન સુધારણા યોજનાઓ",
+    "description": "વિગત",
+    "category": {
+      "subsidy": "સીધી સબસિડી",
+      "insurance": "પાક વીમો",
+      "loan": "કૃષિ ધિરાણ",
+      "training": "જમીન અને જૈવિક તાલીમ",
+      "other": "બજાર જોડાણ"
+    },
+    "category_all": "બધી યોજનાઓ",
+    "eligibility": "પાત્રતા",
+    "benefits": "લાભો",
+    "deadline": "અરજીની છેલ્લી તારીખ",
+    "apply_now": "સત્તાવાર પોર્ટલ",
+    "demo_badge": "ડેમો ડાયરેક્ટરી",
+    "demo_disclaimer": "આ ડેમો માહિતી છે. સત્તાવાર સ્ત્રોતથી ચકાસો.",
+    "verify_official": "સ્થાનિક કૃષિ કચેરીનો સંપર્ક કરો",
+    "eligibility_quiz": "યોજના પાત્રતા તપાસ",
+    "eligible_schemes": "પાત્ર યોજનાઓ",
+    "match_reason": "કારણ",
+    "confidence_high": "ઉચ્ચ",
+    "confidence_medium": "મધ્યમ",
+    "confidence_low": "નીચું",
+    "confidence": "વિશ્વાસપાત્રતા",
+    "farmSizeLabel": "જમીન (એકર)",
+    "checkEligibilityBtn": "પાત્રતા ચકાસો",
+    "noSchemes": "કોઈ યોજના મળી નથી.",
+    "askAiBtn": "સરકારી યોજનાઓ અંગે AgriDarshak ને પૂછો"
   }
 }

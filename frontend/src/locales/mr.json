@@ -48,7 +48,9 @@
     "irrigation": "सिंचन वेळापत्रक",
     "crop_rotation": "पीक फेरपालट नियोजन",
     "inputs": "बियाणे व खते केंद्र",
-    "storage": "कोल्ड स्टोरेज व गोदाम"
+    "storage": "कोल्ड स्टोरेज व गोदाम",
+    "labour": "कृषी मजूर व टोळी बुकिंग",
+    "schemes": "शासकीय योजना व अनुदान"
   },
   "landing": {
     "title": "AI-सक्षम स्मार्ट कृषी बुद्धिमत्ता",
@@ -677,5 +679,71 @@
     "up": "वाढ",
     "down": "घट",
     "stable": "स्थिर"
+  },
+  "labour": {
+    "title": "कृषी मजूर बुकिंग",
+    "subtitle": "स्थानिक शेतमजूर आणि कापणी टोळ्यांशी थेट संपर्क साधा",
+    "available_workers": "उपलब्ध मजूर यादी",
+    "skills": "कौशल्ये",
+    "daily_wage": "दैनिक मजुरी",
+    "location": "स्थान",
+    "availability": "उपलब्धता",
+    "available": "उपलब्ध",
+    "limited": "मर्यादित",
+    "book_now": "मजूर बुक करा",
+    "filter_by_skill": "कौशल्यानुसार निवडा:",
+    "filter_all": "सर्व कौशल्ये",
+    "booking_request": "बुकिंग विनंती",
+    "date": "कामाची तारीख",
+    "duration_days": "कालावधी (दिवस)",
+    "task_description": "कामाचे स्वरूप",
+    "contact_phone": "संपर्क फोन",
+    "submit_request": "डेमो बुकिंग पाठवा",
+    "demo_badge": "डेमो डेटा",
+    "demo_disclaimer": "हा प्रात्यक्षिक डेटा आहे. प्रत्यक्ष उपलब्धता बदलू शकते.",
+    "request_confirmed": "डेमो बुकिंग नोंदवले गेले",
+    "request_pending": "प्रलंबित",
+    "request_rejected": "नाकारले",
+    "noWorkers": "मजूर उपलब्ध नाहीत.",
+    "askAiBtn": "मजूर गरजेबाबत AgriDarshak ला विचारा",
+    "skill": {
+      "harvesting": "कापणी",
+      "irrigation": "पाणी व्यवस्थापन",
+      "pesticide": "कीटकनाशक फवारणी",
+      "planting": "पेरणी व लाsections",
+      "weeding": "खुरपणी",
+      "fertilizer": "खत व्यवस्थापन"
+    }
+  },
+  "scheme": {
+    "title": "शासकीय कल्याणकारी योजना",
+    "subtitle": "अनुदान, पीक विमा, केसीसी कर्ज आणि सेंद्रिय शेती योजना",
+    "description": "माहिती",
+    "category": {
+      "subsidy": "थेट अनुदान",
+      "insurance": "पीक विमा",
+      "loan": "पीक कर्ज (KCC)",
+      "training": "मृदा व सेंद्रिय प्रशिक्षण",
+      "other": "बाजार जोडणी"
+    },
+    "category_all": "सर्व योजना",
+    "eligibility": "पात्रता",
+    "benefits": "लाभ व मदत",
+    "deadline": "शेवटची तारीख",
+    "apply_now": "अधिकृत पोर्टल",
+    "demo_badge": "डेमो डायरेक्टरी",
+    "demo_disclaimer": "हा केवळ डेमो डेटा आहे. अधिकृत माहितीसाठी शासकीय पोर्टल तपासा.",
+    "verify_official": "स्थानिक कृषी कार्यालयाशी संपर्क साधा",
+    "eligibility_quiz": "योजना पात्रता तपासणी",
+    "eligible_schemes": "पात्र योजना",
+    "match_reason": "कारण",
+    "confidence_high": "उच्च",
+    "confidence_medium": "मध्यम",
+    "confidence_low": "कमी",
+    "confidence": "विश्वासार्हता",
+    "farmSizeLabel": "एकूण जमीन (एकर)",
+    "checkEligibilityBtn": "पात्रता तपासा",
+    "noSchemes": "योजना उपलब्ध नाहीत.",
+    "askAiBtn": "शासकीय योजनांबाबत AgriDarshak ला विचारा"
   }
 }

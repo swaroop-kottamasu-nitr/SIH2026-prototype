@@ -48,7 +48,9 @@
     "irrigation": "সেচ সময়সূচী",
     "crop_rotation": "ফসল আবর্তন পরিকল্পনা",
     "inputs": "বীজ ও সার কেন্দ্র",
-    "storage": "হিমাগার ও গুদাম"
+    "storage": "হিমাগার ও গুদাম",
+    "labour": "কৃষি শ্রমিক বুকিং",
+    "schemes": "সরকারি প্রকল্প ও অনুদান"
   },
   "landing": {
     "title": "AI-চালিত স্মার্ট কৃষি বুদ্ধিমত্তা",
@@ -677,5 +679,71 @@
     "up": "বৃদ্ধি",
     "down": "হ্রাস",
     "stable": "স্থিতিশীল"
+  },
+  "labour": {
+    "title": "কৃষি শ্রমিক বুকিং",
+    "subtitle": "স্থানীয় কৃষি শ্রমিক ও ফসল কাটার দলের সাথে সরাসরি যোগাযোগ করুন",
+    "available_workers": "উপলব্ধ শ্রমিক তালিকা",
+    "skills": "দক্ষতা",
+    "daily_wage": "দৈনিক মজুরি",
+    "location": "অবস্থান",
+    "availability": "উপলব্ধতা",
+    "available": "উপলব্ধ",
+    "limited": "সীমিত",
+    "book_now": "শ্রমিক বুক করুন",
+    "filter_by_skill": "দক্ষতা অনুযায়ী ফিল্টার:",
+    "filter_all": "সকল দক্ষতা",
+    "booking_request": "বুকিং অনুরোধ",
+    "date": "কাজের তারিখ",
+    "duration_days": "সময়কাল (দিন)",
+    "task_description": "কাজের বিবরণ",
+    "contact_phone": "যোগাযোগ ফোন",
+    "submit_request": "ডেমো বুকিং জমা দিন",
+    "demo_badge": "ডেমো তথ্য",
+    "demo_disclaimer": "এটি ডেমো তথ্য। প্রকৃত প্রাপ্যতা ভিন্ন হতে পারে।",
+    "request_confirmed": "ডেমো বুকিং সফল হয়েছে",
+    "request_pending": "বুকিং প্রক্রিয়াধীন",
+    "request_rejected": "বুকিং বাতিল",
+    "noWorkers": "কোন শ্রমিক পাওয়া যায়নি।",
+    "askAiBtn": "শ্রমিক প্রয়োজন সম্পর্কে AgriDarshak কে জিজ্ঞাসা করুন",
+    "skill": {
+      "harvesting": "ফসল কাটা",
+      "irrigation": "সেচ প্রদান",
+      "pesticide": "কীটনাশক প্রয়োগ",
+      "planting": "বীজ বপন ও রোপণ",
+      "weeding": "আগাছা নিড়ানো",
+      "fertilizer": "সার প্রয়োগ"
+    }
+  },
+  "scheme": {
+    "title": "সরকারি কৃষি কল্যাণ প্রকল্প",
+    "subtitle": "আর্থিক অনুদান, ফসল বীমা, কেসিসি ঋণ ও মৃত্তিকা স্বাস্থ্য প্রকল্প",
+    "description": "বিবরণ",
+    "category": {
+      "subsidy": "সরাসরি অনুদান",
+      "insurance": "ফসল বীমা",
+      "loan": "কৃষি ঋণ (KCC)",
+      "training": "মৃত্তিকা ও জৈব প্রশিক্ষণ",
+      "other": "বাজার সংযোগ"
+    },
+    "category_all": "সকল প্রকল্প",
+    "eligibility": "যোগ্যতা",
+    "benefits": "সুবিধাসমূহ",
+    "deadline": "আবেদনের শেষ তারিখ",
+    "apply_now": "অফিসিয়াল পোর্টাল",
+    "demo_badge": "ডেমো তালিকা",
+    "demo_disclaimer": "এটি ডেমো তথ্য। সরকারি সূত্র থেকে যাচাই করুন।",
+    "verify_official": "স্থানীয় কৃষি অফিসে যোগাযোগ করুন",
+    "eligibility_quiz": "প্রকল্প যোগ্যতা যাচাই",
+    "eligible_schemes": "যোগ্য প্রকল্পসমূহ",
+    "match_reason": "কারণ",
+    "confidence_high": "উচ্চ",
+    "confidence_medium": "মাঝারি",
+    "confidence_low": "নিম্ন",
+    "confidence": "নির্ভরযোগ্যতা",
+    "farmSizeLabel": "জমির পরিমাণ (একর)",
+    "checkEligibilityBtn": "যোগ্যতা মূল্যায়ন করুন",
+    "noSchemes": "কোন প্রকল্প পাওয়া যায়নি।",
+    "askAiBtn": "সরকারি প্রকল্প সম্পর্কে AgriDarshak কে জিজ্ঞাসা করুন"
   }
 }

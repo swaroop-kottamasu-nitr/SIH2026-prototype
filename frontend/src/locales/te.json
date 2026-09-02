@@ -48,7 +48,9 @@
     "irrigation": "నీటిపారుదల షెడ్యూలర్",
     "crop_rotation": "పంట మార్పిడి ప్రణాళిక",
     "inputs": "విత్తనాలు & ఎరువుల కేంద్రాలు",
-    "storage": "కోల్డ్ స్టోరేజ్ & గోదాములు"
+    "storage": "కోల్డ్ స్టోరేజ్ & గోదాములు",
+    "labour": "వ్యవసాయ కూలీల బుకింగ్",
+    "schemes": "ప్రభుత్వ పథకాలు & సబ్సిడీలు"
   },
   "landing": {
     "title": "AI-ఆధారిత స్మార్ట్ వ్యవసాయ వేదిక",
@@ -677,5 +679,71 @@
     "up": "పెరుగుదల",
     "down": "తగ్గుదల",
     "stable": "స్థిరం"
+  },
+  "labour": {
+    "title": "వ్యవసాయ కూలీల బుకింగ్",
+    "subtitle": "స్థానిక కూలీలు మరియు కోత బృందాలతో నేరుగా కనెక్ట్ అవ్వండి",
+    "available_workers": "అందుబాటులో ఉన్న కూలీలు",
+    "skills": "నైపుణ్యాలు",
+    "daily_wage": "రోజువారీ కూలీ",
+    "location": "ప్రాంతం",
+    "availability": "లభ్యత",
+    "available": "అందుబాటులో ఉంది",
+    "limited": "పరిమితం",
+    "book_now": "కూలీలను బుక్ చేయండి",
+    "filter_by_skill": "నైపుణ్యం ఆధారంగా ఫిల్టర్:",
+    "filter_all": "అన్ని నైపుణ్యాలు",
+    "booking_request": "బుకింగ్ అభ్యర్థన",
+    "date": "పని తేదీ",
+    "duration_days": "వ్యవధి (రోజులు)",
+    "task_description": "పని వివరణ",
+    "contact_phone": "ఫోన్ నంబర్",
+    "submit_request": "డెమో బుకింగ్ సమర్పించండి",
+    "demo_badge": "డెమో డేటా",
+    "demo_disclaimer": "ఇది ప్రదర్శన డేటా మాత్రమే.",
+    "request_confirmed": "డెమో బుకింగ్ నమోదైంది",
+    "request_pending": "పెండింగ్‌లో ఉంది",
+    "request_rejected": "తిరస్కరించబడింది",
+    "noWorkers": "కూలీలు అందుబాటులో లేరు.",
+    "askAiBtn": "కూలీల అవసరాల గురించి AgriDarshak ని అడగండి",
+    "skill": {
+      "harvesting": "కోత",
+      "irrigation": "నీటిపారుదల",
+      "pesticide": "మందుల పిచికారీ",
+      "planting": "నాట్లు",
+      "weeding": "కలుపు తీయడం",
+      "fertilizer": "ఎరువులు వేయడం"
+    }
+  },
+  "scheme": {
+    "title": "ప్రభుత్వ సంక్షేమ పథకాలు",
+    "subtitle": "రైతు సబ్సిడీలు, పంట బీమా మరియు కిసాన్ క్రెడిట్ కార్డు పథకాలు",
+    "description": "వివరణ",
+    "category": {
+      "subsidy": "సబ్సిడీలు",
+      "insurance": "పంట బీమా",
+      "loan": "వ్యవసాయ రుణాలు",
+      "training": "నేల & సేంద్రీయ శిక్షణ",
+      "other": "మార్కెట్ లింకేజ్"
+    },
+    "category_all": "అన్ని పథకాలు",
+    "eligibility": "అర్హత",
+    "benefits": "ప్రయోజనాలు",
+    "deadline": "చివరి తేదీ",
+    "apply_now": "అధికారిక పోర్టల్",
+    "demo_badge": "డెమో డైరెక్టరీ",
+    "demo_disclaimer": "ఇది ప్రదర్శన డేటా మాత్రమే. అధికారిక సమాచారం కోసం చూడండి.",
+    "verify_official": "వ్యవసాయ కార్యాలయాన్ని సంప్రదించండి",
+    "eligibility_quiz": "పథక అర్హత అంచనా",
+    "eligible_schemes": "అర్హత గల పథకాలు",
+    "match_reason": "కారణం",
+    "confidence_high": "అధికం",
+    "confidence_medium": "మధ్యస్థం",
+    "confidence_low": "తక్కువ",
+    "confidence": "విశ్వసనీయత",
+    "farmSizeLabel": "భూమి (ఎకరాలు)",
+    "checkEligibilityBtn": "అర్హతను తనిఖీ చేయండి",
+    "noSchemes": "పథకాలు లేవు.",
+    "askAiBtn": "ప్రభుత్వ పథకాల గురించి AgriDarshak ని అడగండి"
   }
 }

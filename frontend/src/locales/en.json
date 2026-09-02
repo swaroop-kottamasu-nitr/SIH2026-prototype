@@ -48,7 +48,9 @@
     "irrigation": "Precision Water Windows",
     "crop_rotation": "Pest Break & Soil Vitality",
     "inputs": "Certified Seeds & Bio-Inputs",
-    "storage": "Cold Chains & Warehouses"
+    "storage": "Cold Chains & Warehouses",
+    "labour": "Farm Crews & Daily Labor",
+    "schemes": "Subsidies, KCC & PMFBY"
   },
   "landing": {
     "title": "AI-Powered Agricultural Intelligence",
@@ -677,5 +679,71 @@
     "up": "UP",
     "down": "DOWN",
     "stable": "STABLE"
+  },
+  "labour": {
+    "title": "Farm Labour Booking",
+    "subtitle": "Connect with available local farm workers and specialized harvest teams",
+    "available_workers": "available workers & crews listed",
+    "skills": "Skills",
+    "daily_wage": "Daily Wage",
+    "location": "Location",
+    "availability": "Availability",
+    "available": "Available",
+    "limited": "Limited",
+    "book_now": "Book Worker",
+    "filter_by_skill": "Filter by Required Skill:",
+    "filter_all": "All Skills",
+    "booking_request": "Labour Booking Request",
+    "date": "Work Date",
+    "duration_days": "Duration (Days)",
+    "task_description": "Task Description",
+    "contact_phone": "Contact Phone",
+    "submit_request": "Submit Demo Booking",
+    "demo_badge": "DEMO DATA",
+    "demo_disclaimer": "This is demonstration data. Actual labour availability may vary.",
+    "request_confirmed": "Demo Booking Registered",
+    "request_pending": "Booking Pending",
+    "request_rejected": "Booking Rejected",
+    "noWorkers": "No worker listings match the selected skill category.",
+    "askAiBtn": "Ask AgriDarshak about seasonal labour requirements & wages",
+    "skill": {
+      "harvesting": "Harvesting",
+      "irrigation": "Irrigation",
+      "pesticide": "Pesticide Spraying",
+      "planting": "Planting & Sowing",
+      "weeding": "Weeding",
+      "fertilizer": "Fertilizer Application"
+    }
+  },
+  "scheme": {
+    "title": "Government Welfare Schemes",
+    "subtitle": "Explore financial subsidies, crop insurance coverage, low-interest KCC loans, and organic soil missions",
+    "description": "Description",
+    "category": {
+      "subsidy": "Direct Subsidies",
+      "insurance": "Crop Insurance",
+      "loan": "Credit & Loans (KCC)",
+      "training": "Soil & Organic Training",
+      "other": "Market Linkage"
+    },
+    "category_all": "All Schemes",
+    "eligibility": "Eligibility Criteria",
+    "benefits": "Benefits & Assistance",
+    "deadline": "Application Deadline",
+    "apply_now": "Visit Official Portal",
+    "demo_badge": "DEMO DIRECTORY",
+    "demo_disclaimer": "This is demonstration data for SIH 2026. Verify all scheme details with official government sources.",
+    "verify_official": "Contact local agriculture office for official scheme information",
+    "eligibility_quiz": "Instant Farm Scheme Eligibility Estimator",
+    "eligible_schemes": "Estimated Eligible Programs",
+    "match_reason": "Match Reason",
+    "confidence_high": "HIGH",
+    "confidence_medium": "MEDIUM",
+    "confidence_low": "LOW",
+    "confidence": "Confidence",
+    "farmSizeLabel": "Total Farm Land (Acres)",
+    "checkEligibilityBtn": "Evaluate Matches",
+    "noSchemes": "No schemes found in this category.",
+    "askAiBtn": "Ask AgriDarshak about government scheme application procedures"
   }
 }

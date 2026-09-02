@@ -1,0 +1,322 @@
+.schemes-page {
+  padding: var(--space-6) 0 var(--space-12);
+  min-height: calc(100vh - 70px);
+  background-color: var(--brand-background);
+}
+
+.schemes-header {
+  margin-bottom: var(--space-5);
+}
+
+.schemes-title-box {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.schemes-icon-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-xl);
+  background: linear-gradient(135deg, rgba(31, 122, 69, 0.15), rgba(95, 175, 69, 0.25));
+  color: var(--brand-primary);
+  flex-shrink: 0;
+}
+
+.schemes-title {
+  font-size: var(--text-2xl);
+  font-weight: 800;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.schemes-subtitle {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  margin-top: 2px;
+}
+
+/* Eligibility Quiz Card */
+.quiz-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-5);
+  margin-bottom: var(--space-6);
+  box-shadow: var(--shadow-sm);
+}
+
+.quiz-card-title {
+  font-size: var(--text-base);
+  font-weight: 800;
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-4);
+}
+
+.quiz-form-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1.5fr auto;
+  gap: var(--space-3);
+}
+
+.quiz-submit-btn {
+  height: 42px;
+  padding: 0 var(--space-4);
+  white-space: nowrap;
+  font-weight: 700;
+}
+
+.quiz-matches-box {
+  margin-top: var(--space-4);
+  padding: var(--space-4);
+  background: linear-gradient(135deg, rgba(31, 122, 69, 0.06), rgba(95, 175, 69, 0.1));
+  border: 1px solid rgba(31, 122, 69, 0.2);
+  border-radius: var(--radius-lg);
+}
+
+.matches-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: var(--space-3);
+}
+
+.match-icon {
+  color: var(--brand-primary);
+}
+
+.matches-title {
+  font-size: var(--text-xs);
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--brand-primary);
+}
+
+.matches-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-3);
+}
+
+.match-item {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+}
+
+.match-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.match-scheme-id {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--brand-primary);
+}
+
+.match-conf {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+.conf-high {
+  background: rgba(31, 122, 69, 0.12);
+  color: var(--brand-primary);
+}
+
+.conf-medium {
+  background: rgba(217, 119, 6, 0.12);
+  color: #D97706;
+}
+
+.match-reason-text {
+  font-size: 11px;
+  color: var(--color-text-secondary);
+  line-height: 1.35;
+  margin: 0;
+}
+
+/* Category Filter Row */
+.schemes-filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-bottom: var(--space-5);
+}
+
+.category-filter-btn {
+  padding: 8px 16px;
+  border-radius: var(--radius-full);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-primary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.category-filter-btn:hover {
+  border-color: var(--brand-secondary);
+}
+
+.category-filter-btn.active {
+  background: var(--brand-primary);
+  color: white;
+  border-color: var(--brand-primary);
+}
+
+/* Schemes List */
+.schemes-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.scheme-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-xs);
+  transition: border-color var(--transition-fast);
+}
+
+.scheme-card:hover {
+  border-color: var(--brand-secondary);
+}
+
+.scheme-card-summary {
+  padding: var(--space-4) var(--space-5);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  gap: var(--space-4);
+}
+
+.scheme-header-info {
+  flex: 1;
+}
+
+.scheme-title-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: 4px;
+}
+
+.scheme-name {
+  font-size: var(--text-base);
+  font-weight: 800;
+  color: var(--color-text-primary);
+}
+
+.category-tag {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  text-transform: capitalize;
+}
+
+.cat-subsidy { background: rgba(31, 122, 69, 0.1); color: var(--brand-primary); }
+.cat-insurance { background: rgba(37, 99, 235, 0.1); color: #2563EB; }
+.cat-loan { background: rgba(217, 119, 6, 0.1); color: #D97706; }
+.cat-training { background: rgba(147, 51, 234, 0.1); color: #9333EA; }
+.cat-other { background: rgba(107, 114, 128, 0.1); color: #4B5563; }
+
+.scheme-desc {
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+  line-height: 1.4;
+  margin: 0;
+}
+
+.expand-toggle-btn {
+  background: none;
+  border: none;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+}
+
+/* Expanded Details */
+.scheme-expanded-details {
+  background: var(--color-background-secondary);
+  border-top: 1px solid var(--color-border);
+  padding: var(--space-4) var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.detail-block {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.detail-label {
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+}
+
+.detail-val-text {
+  font-size: var(--text-xs);
+  color: var(--color-text-primary);
+  line-height: 1.45;
+  margin: 0;
+}
+
+.detail-footer-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+  padding-top: var(--space-3);
+  border-top: 1px dashed var(--color-border);
+}
+
+.deadline-badge {
+  font-size: 11px;
+  color: var(--color-text-secondary);
+  font-weight: 600;
+}
+
+.official-portal-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--text-xs);
+  font-weight: 700;
+  color: var(--brand-primary);
+  text-decoration: none;
+}
+
+.official-portal-link:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 800px) {
+  .quiz-form-grid {
+    grid-template-columns: 1fr;
+  }
+}

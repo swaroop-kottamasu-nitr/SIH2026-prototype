@@ -16,6 +16,8 @@ import Irrigation from './pages/Irrigation'
 import CropRotation from './pages/CropRotation'
 import InputLocator from './pages/InputLocator'
 import StorageLocator from './pages/StorageLocator'
+import LabourBooking from './pages/LabourBooking'
+import GovernmentSchemes from './pages/GovernmentSchemes'
 import AlertDetail from './pages/AlertDetail'
 import AlertBanner from './components/AlertBanner'
 
@@ -117,6 +119,22 @@ function App() {
                 <Route
                     path="/dashboard/storage"
                     element={user ? <StorageLocator user={user} onLogout={handleLogout} onUserUpdate={handleLogin} /> : <Navigate to="/login" />}
+                />
+                <Route
+                    path="/labour"
+                    element={user ? <LabourBooking user={user} onLogout={handleLogout} onUserUpdate={handleLogin} /> : <Navigate to="/login" />}
+                />
+                <Route
+                    path="/dashboard/labour"
+                    element={user ? <LabourBooking user={user} onLogout={handleLogout} onUserUpdate={handleLogin} /> : <Navigate to="/login" />}
+                />
+                <Route
+                    path="/schemes"
+                    element={user ? <GovernmentSchemes user={user} onLogout={handleLogout} onUserUpdate={handleLogin} /> : <Navigate to="/login" />}
+                />
+                <Route
+                    path="/dashboard/schemes"
+                    element={user ? <GovernmentSchemes user={user} onLogout={handleLogout} onUserUpdate={handleLogin} /> : <Navigate to="/login" />}
                 />
                 <Route path="/alert/:id" element={user ? <AlertDetail user={user} onLogout={handleLogout} onUserUpdate={handleLogin} /> : <Navigate to="/login" />} />
             </Routes>

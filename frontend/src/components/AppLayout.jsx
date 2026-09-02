@@ -49,7 +49,7 @@ function AppLayout({ children, user, onLogout, onUserUpdate }) {
     return location.pathname.startsWith(path)
   }
 
-  const isToolsActive = ['/disease-detection', '/soil-analysis', '/crop-recommendation', '/irrigation', '/crop-rotation', '/inputs', '/storage'].some(p => location.pathname.startsWith(p))
+  const isToolsActive = ['/disease-detection', '/soil-analysis', '/crop-recommendation', '/irrigation', '/crop-rotation', '/inputs', '/storage', '/labour', '/schemes'].some(p => location.pathname.startsWith(p))
 
   return (
     <div className="app-layout">
@@ -193,6 +193,30 @@ function AppLayout({ children, user, onLogout, onUserUpdate }) {
                         <span className="item-sub">{t('nav.storage', { defaultValue: 'Cold Chains & Warehouses' })}</span>
                       </div>
                     </Link>
+
+                    <Link
+                      to="/labour"
+                      className={`dropdown-item ${isActive('/labour') ? 'active' : ''}`}
+                      onClick={() => setToolsOpen(false)}
+                    >
+                      <span className="item-icon">👥</span>
+                      <div className="item-text">
+                        <span className="item-title">{t('labour.title', { defaultValue: 'Labour Booking' })}</span>
+                        <span className="item-sub">{t('nav.labour', { defaultValue: 'Farm Crews & Daily Labor' })}</span>
+                      </div>
+                    </Link>
+
+                    <Link
+                      to="/schemes"
+                      className={`dropdown-item ${isActive('/schemes') ? 'active' : ''}`}
+                      onClick={() => setToolsOpen(false)}
+                    >
+                      <span className="item-icon">🏛️</span>
+                      <div className="item-text">
+                        <span className="item-title">{t('scheme.title', { defaultValue: 'Government Schemes' })}</span>
+                        <span className="item-sub">{t('nav.schemes', { defaultValue: 'Subsidies, KCC & PMFBY' })}</span>
+                      </div>
+                    </Link>
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -323,6 +347,20 @@ function AppLayout({ children, user, onLogout, onUserUpdate }) {
                 onClick={() => setMobileMenuOpen(false)}
               >
                 🏢 {t('storage.title', { defaultValue: 'Storage Locator' })}
+              </Link>
+              <Link
+                to="/labour"
+                className={`nav-mobile-link ${isActive('/labour') ? 'active' : ''}`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                👥 {t('labour.title', { defaultValue: 'Labour Booking' })}
+              </Link>
+              <Link
+                to="/schemes"
+                className={`nav-mobile-link ${isActive('/schemes') ? 'active' : ''}`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                🏛️ {t('scheme.title', { defaultValue: 'Government Schemes' })}
               </Link>
 
               <div className="lang-selector-mobile">

@@ -48,7 +48,9 @@
     "irrigation": "நீர்ப்பாசன அட்டவணை",
     "crop_rotation": "பயிர் சுழற்சி திட்டம்",
     "inputs": "விதை & உர மையங்கள்",
-    "storage": "குளிர்பதன கிடங்குகள்"
+    "storage": "குளிர்பதன கிடங்குகள்",
+    "labour": "வேளாண் தொழிலாளர் முன்பதிவு",
+    "schemes": "அரசு நலத்திட்டங்கள்"
   },
   "landing": {
     "title": "AI-உந்துதல் ஸ்மார்ட் விவசாய நுண்ணறிவு",
@@ -677,5 +679,71 @@
     "up": "ஏற்றம்",
     "down": "இறக்கம்",
     "stable": "நிலையானது"
+  },
+  "labour": {
+    "title": "வேளாண் தொழிலாளர் முன்பதிவு",
+    "subtitle": "உள்ளூர் விவசாய தொழிலாளர்கள் மற்றும் அறுவடை குழுக்களை கண்டறியவும்",
+    "available_workers": "தொழிலாளர்கள் பட்டியல்",
+    "skills": "திறன்கள்",
+    "daily_wage": "தினசரி கூலி",
+    "location": "இடம்",
+    "availability": "இருப்பு நிலை",
+    "available": "உள்ளது",
+    "limited": "குறைவு",
+    "book_now": "முன்பதிவு செய்",
+    "filter_by_skill": "திறன் வாரியாக:",
+    "filter_all": "அனைத்து திறன்கள்",
+    "booking_request": "முன்பதிவு கோரிக்கை",
+    "date": "வேலை தேதி",
+    "duration_days": "நாட்கள்",
+    "task_description": "வேலை விவரம்",
+    "contact_phone": "தொலைபேசி",
+    "submit_request": "கோரிக்கையை அனுப்பு",
+    "demo_badge": "மாதிரி தரவு",
+    "demo_disclaimer": "இது மாதிரி தரவு மட்டுமே.",
+    "request_confirmed": "முன்பதிவு பதிவு செய்யப்பட்டது",
+    "request_pending": "நிலுவையில் உள்ளது",
+    "request_rejected": "நிராகரிக்கப்பட்டது",
+    "noWorkers": "தொழிலாளர்கள் இல்லை.",
+    "askAiBtn": "தொழிலாளர் பற்றி AgriDarshak இடம் கேளுங்கள்",
+    "skill": {
+      "harvesting": "அறுவடை",
+      "irrigation": "நீர்ப்பாசனம்",
+      "pesticide": "பூச்சிக்கொல்லி தெளிப்பு",
+      "planting": "நடவு",
+      "weeding": "களை எடுத்தல்",
+      "fertilizer": "உரமிடுதல்"
+    }
+  },
+  "scheme": {
+    "title": "அரசு நலத்திட்டங்கள்",
+    "subtitle": "விவசாய மானியங்கள், பயிர் காப்பீடு மற்றும் கிசான் கடன் அட்டை விவரங்கள்",
+    "description": "விவரம்",
+    "category": {
+      "subsidy": "மானியம்",
+      "insurance": "பயிர் காப்பீடு",
+      "loan": "விவசாய கடன்கள்",
+      "training": "பயிற்சி",
+      "other": "சந்தை இணைப்பு"
+    },
+    "category_all": "அனைத்து திட்டங்கள்",
+    "eligibility": "தகுதி",
+    "benefits": "நன்மைகள்",
+    "deadline": "கடைசி தேதி",
+    "apply_now": "அதிகாரப்பூர்வ தளம்",
+    "demo_badge": "மாதிரி பட்டியல்",
+    "demo_disclaimer": "இது மாதிரி தரவு மட்டுமே.",
+    "verify_official": "வேளாண் அலுவலகத்தை தொடர்பு கொள்ளவும்",
+    "eligibility_quiz": "திட்ட தகுதி மதிப்பீடு",
+    "eligible_schemes": "பொருத்தமான திட்டங்கள்",
+    "match_reason": "காரணம்",
+    "confidence_high": "உயர்",
+    "confidence_medium": "நடுத்தர",
+    "confidence_low": "குறைவு",
+    "confidence": "நம்பகத்தன்மை",
+    "farmSizeLabel": "நில அளவு (ஏக்கர்)",
+    "checkEligibilityBtn": "தகுதியை சரிபார்",
+    "noSchemes": "திட்டங்கள் இல்லை.",
+    "askAiBtn": "அரசு திட்டங்கள் பற்றி AgriDarshak இடம் கேளுங்கள்"
   }
 }
