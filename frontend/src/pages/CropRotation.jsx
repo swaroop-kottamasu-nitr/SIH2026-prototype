@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import axios from 'axios'
 import { motion } from 'framer-motion'
 import AppLayout from '../components/AppLayout'
+import { getEffectiveLanguage } from '../i18n'
 import { 
   FiRefreshCw, FiCheckCircle, FiShield, FiTrendingUp, 
   FiLayers, FiInfo, FiPlus, FiTrash2
@@ -18,7 +19,7 @@ const SEASONS = [
 const SOIL_TYPES = ['Loamy', 'Black Soil', 'Clay', 'Sandy', 'Alluvial', 'Red Soil']
 
 export default function CropRotation({ user, onLogout, onUserUpdate }) {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
 
   const defaultCrop = (user?.preferred_crops && user.preferred_crops.length > 0)
     ? user.preferred_crops[0]

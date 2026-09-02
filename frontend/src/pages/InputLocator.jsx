@@ -5,6 +5,7 @@ import axios from 'axios'
 import { motion } from 'framer-motion'
 import AppLayout from '../components/AppLayout'
 import AdvisoryMarkdown from '../components/AdvisoryMarkdown'
+import { getEffectiveLanguage } from '../i18n'
 import { 
   FiMapPin, FiPhone, FiCheckCircle, FiAlertCircle, 
   FiSearch, FiZap, FiShoppingBag, FiShield, FiTag 
@@ -21,7 +22,7 @@ const CATEGORIES = [
 ]
 
 export default function InputLocator({ user, onLogout, onUserUpdate }) {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const [category, setCategory] = useState('all')
   const [location, setLocation] = useState(user?.location || 'Vijayawada, Andhra Pradesh')
   const [results, setResults] = useState([])

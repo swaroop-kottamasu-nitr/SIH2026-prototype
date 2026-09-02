@@ -5,6 +5,7 @@ import axios from 'axios'
 import { motion } from 'framer-motion'
 import AppLayout from '../components/AppLayout'
 import AdvisoryMarkdown from '../components/AdvisoryMarkdown'
+import { getEffectiveLanguage } from '../i18n'
 import { 
   FiDroplet, FiClock, FiShield, FiTrendingUp, FiCloudRain, 
   FiCheckCircle, FiInfo, FiAlertCircle, FiArrowRight, FiZap
@@ -22,7 +23,7 @@ const STAGES = [
 const SOIL_TYPES = ['Loamy', 'Black Soil', 'Clay', 'Sandy', 'Alluvial', 'Red Soil']
 
 export default function Irrigation({ user, onLogout, onUserUpdate }) {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
 
   const defaultCrop = (user?.preferred_crops && user.preferred_crops.length > 0)
     ? user.preferred_crops[0]

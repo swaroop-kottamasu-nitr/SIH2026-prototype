@@ -5,6 +5,7 @@ import axios from 'axios'
 import { motion, AnimatePresence } from 'framer-motion'
 import AppLayout from '../components/AppLayout'
 import AdvisoryMarkdown from '../components/AdvisoryMarkdown'
+import { getEffectiveLanguage } from '../i18n'
 import { 
   FiAward, FiCheckCircle, FiChevronDown, FiChevronUp, FiExternalLink, 
   FiAlertTriangle, FiZap, FiHelpCircle, FiFileText, FiDollarSign, FiShield 
@@ -21,7 +22,7 @@ const CATEGORIES = [
 ]
 
 export default function GovernmentSchemes({ user, onLogout, onUserUpdate }) {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const [category, setCategory] = useState('all')
   const [schemes, setSchemes] = useState([])
   const [loading, setLoading] = useState(false)

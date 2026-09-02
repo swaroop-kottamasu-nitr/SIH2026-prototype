@@ -5,6 +5,7 @@ import axios from 'axios'
 import { motion, AnimatePresence } from 'framer-motion'
 import AppLayout from '../components/AppLayout'
 import AdvisoryMarkdown from '../components/AdvisoryMarkdown'
+import { getEffectiveLanguage } from '../i18n'
 import { 
   FiUsers, FiMapPin, FiCalendar, FiDollarSign, FiStar, 
   FiCheckCircle, FiAlertTriangle, FiZap, FiX, FiCheck, FiInfo, FiClock 
@@ -22,7 +23,7 @@ const SKILLS = [
 ]
 
 export default function LabourBooking({ user, onLogout, onUserUpdate }) {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const [skillFilter, setSkillFilter] = useState('all')
   const [workers, setWorkers] = useState([])
   const [loading, setLoading] = useState(false)

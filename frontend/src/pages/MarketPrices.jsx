@@ -5,6 +5,7 @@ import axios from 'axios'
 import { motion } from 'framer-motion'
 import AppLayout from '../components/AppLayout'
 import AdvisoryMarkdown from '../components/AdvisoryMarkdown'
+import { getEffectiveLanguage } from '../i18n'
 import { 
   FiArrowLeft, FiTrendingUp, FiTrendingDown, FiMinus, 
   FiMapPin, FiInfo, FiZap, FiCheckCircle, FiCompass, FiShield 
@@ -23,7 +24,7 @@ const POPULAR = [
 ]
 
 export default function MarketPrices({ user, onLogout, onUserUpdate }) {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const [activeTab, setActiveTab] = useState('overview') // 'overview' | 'compare'
 
   // Overview states

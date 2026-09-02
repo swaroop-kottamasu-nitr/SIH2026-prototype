@@ -70,7 +70,23 @@ function App() {
                     element={user ? <SoilAnalysis user={user} onLogout={handleLogout} onUserUpdate={handleLogin} /> : <Navigate to="/login" />}
                 />
                 <Route
+                    path="/dashboard/soil"
+                    element={user ? <SoilAnalysis user={user} onLogout={handleLogout} onUserUpdate={handleLogin} /> : <Navigate to="/login" />}
+                />
+                <Route
+                    path="/dashboard/soil-analysis"
+                    element={user ? <SoilAnalysis user={user} onLogout={handleLogout} onUserUpdate={handleLogin} /> : <Navigate to="/login" />}
+                />
+                <Route
                     path="/crop-recommendation"
+                    element={user ? <CropRecommendation user={user} onLogout={handleLogout} onUserUpdate={handleLogin} /> : <Navigate to="/login" />}
+                />
+                <Route
+                    path="/dashboard/crop-recommend"
+                    element={user ? <CropRecommendation user={user} onLogout={handleLogout} onUserUpdate={handleLogin} /> : <Navigate to="/login" />}
+                />
+                <Route
+                    path="/dashboard/crop-recommendation"
                     element={user ? <CropRecommendation user={user} onLogout={handleLogout} onUserUpdate={handleLogin} /> : <Navigate to="/login" />}
                 />
                 <Route
@@ -78,7 +94,19 @@ function App() {
                     element={user ? <Weather user={user} onLogout={handleLogout} onUserUpdate={handleLogin} /> : <Navigate to="/login" />}
                 />
                 <Route
+                    path="/dashboard/weather"
+                    element={user ? <Weather user={user} onLogout={handleLogout} onUserUpdate={handleLogin} /> : <Navigate to="/login" />}
+                />
+                <Route
                     path="/disease-detection"
+                    element={user ? <DiseaseDetection user={user} onLogout={handleLogout} onUserUpdate={handleLogin} /> : <Navigate to="/login" />}
+                />
+                <Route
+                    path="/dashboard/disease"
+                    element={user ? <DiseaseDetection user={user} onLogout={handleLogout} onUserUpdate={handleLogin} /> : <Navigate to="/login" />}
+                />
+                <Route
+                    path="/dashboard/disease-detection"
                     element={user ? <DiseaseDetection user={user} onLogout={handleLogout} onUserUpdate={handleLogin} /> : <Navigate to="/login" />}
                 />
                 <Route
@@ -86,7 +114,19 @@ function App() {
                     element={user ? <SoilTypeDetection user={user} onLogout={handleLogout} onUserUpdate={handleLogin} /> : <Navigate to="/login" />}
                 />
                 <Route
+                    path="/dashboard/soil-detection"
+                    element={user ? <SoilTypeDetection user={user} onLogout={handleLogout} onUserUpdate={handleLogin} /> : <Navigate to="/login" />}
+                />
+                <Route
                     path="/market-prices"
+                    element={user ? <MarketPrices user={user} onLogout={handleLogout} onUserUpdate={handleLogin} /> : <Navigate to="/login" />}
+                />
+                <Route
+                    path="/dashboard/market"
+                    element={user ? <MarketPrices user={user} onLogout={handleLogout} onUserUpdate={handleLogin} /> : <Navigate to="/login" />}
+                />
+                <Route
+                    path="/dashboard/market-prices"
                     element={user ? <MarketPrices user={user} onLogout={handleLogout} onUserUpdate={handleLogin} /> : <Navigate to="/login" />}
                 />
                 <Route

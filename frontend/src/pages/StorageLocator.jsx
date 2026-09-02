@@ -5,6 +5,7 @@ import axios from 'axios'
 import { motion } from 'framer-motion'
 import AppLayout from '../components/AppLayout'
 import AdvisoryMarkdown from '../components/AdvisoryMarkdown'
+import { getEffectiveLanguage } from '../i18n'
 import { 
   FiArchive, FiMapPin, FiPhone, FiInfo, FiZap, 
   FiSearch, FiAlertTriangle, FiCheckCircle, FiShield 
@@ -14,7 +15,7 @@ import './StorageLocator.css'
 const CROPS = ['Chilli', 'Rice', 'Wheat', 'Cotton', 'Tomato', 'Potato', 'Onion', 'Groundnut', 'Maize', 'Turmeric']
 
 export default function StorageLocator({ user, onLogout, onUserUpdate }) {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const [crop, setCrop] = useState('Chilli')
   const [quantity, setQuantity] = useState(50)
   const [location, setLocation] = useState(user?.location || 'Vijayawada, Andhra Pradesh')
