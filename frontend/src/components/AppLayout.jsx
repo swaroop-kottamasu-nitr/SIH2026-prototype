@@ -49,7 +49,7 @@ function AppLayout({ children, user, onLogout, onUserUpdate }) {
     return location.pathname.startsWith(path)
   }
 
-  const isToolsActive = ['/disease-detection', '/soil-analysis', '/crop-recommendation', '/irrigation', '/crop-rotation', '/inputs', '/storage', '/labour', '/schemes'].some(p => location.pathname.startsWith(p))
+  const isToolsActive = ['/disease-detection', '/soil-analysis', '/crop-recommendation', '/irrigation', '/crop-rotation', '/inputs', '/storage', '/labour', '/schemes', '/chatbot'].some(p => location.pathname.startsWith(p))
 
   return (
     <div className="app-layout">
@@ -217,6 +217,18 @@ function AppLayout({ children, user, onLogout, onUserUpdate }) {
                         <span className="item-sub">{t('nav.schemes', { defaultValue: 'Subsidies, KCC & PMFBY' })}</span>
                       </div>
                     </Link>
+
+                    <Link
+                      to="/chatbot"
+                      className={`dropdown-item ${isActive('/chatbot') ? 'active' : ''}`}
+                      onClick={() => setToolsOpen(false)}
+                    >
+                      <span className="item-icon">💬</span>
+                      <div className="item-text">
+                        <span className="item-title">{t('chat.title', { defaultValue: 'AI Chatbot & Voice' })}</span>
+                        <span className="item-sub">{t('nav.chat', { defaultValue: 'Conversational Farm Assistant' })}</span>
+                      </div>
+                    </Link>
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -361,6 +373,13 @@ function AppLayout({ children, user, onLogout, onUserUpdate }) {
                 onClick={() => setMobileMenuOpen(false)}
               >
                 🏛️ {t('scheme.title', { defaultValue: 'Government Schemes' })}
+              </Link>
+              <Link
+                to="/chatbot"
+                className={`nav-mobile-link ${isActive('/chatbot') ? 'active' : ''}`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                💬 {t('chat.title', { defaultValue: 'AI Chatbot & Voice' })}
               </Link>
 
               <div className="lang-selector-mobile">

@@ -12,6 +12,7 @@ router = APIRouter(prefix="/api/farm-health", tags=["Farm Health & Distress Risk
 class FarmRiskRequest(BaseModel):
     user_id: Optional[int] = None
     location: Optional[str] = None
+    language: Optional[str] = "en"
 
 
 from typing import Optional, List, Dict, Any
@@ -58,25 +59,35 @@ def resolve_authorized_user_id(
         except ValueError:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Invalid authentication identifier"
+                detail="Invalid user identification header format"
             )
-    # Check Authorization: Bearer <id/token>
-    elif authorization:
-        parts = authorization.strip().split()
-        token = parts[1] if len(parts) == 2 else parts[0]
-        if token.isdigit():
-            authenticated_id = int(token)
 
-    # 1. Authenticated caller attempting to access a different user's private farm data
+    # Check Bearer JWT token header
+    if authorization and authorization.startswith("Bearer "):
+        token = authorization.split(" ")[1]
+        try:
+            from services.auth import verify_token
+            payload = verify_token(token)
+            if payload and "sub" in payload:
+                user_email = payload["sub"]
+                if db:
+                    u = db.query(User).filter(User.email == user_email).first()
+                    if u:
+                        authenticated_id = u.id
+        except Exception:
+            pass
+
+    # Authorization enforcement:
+    # 1. If user is authenticated, ensure they cannot query another user's private data
     if authenticated_id is not None and requested_user_id is not None:
         if authenticated_id != requested_user_id:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
-                detail="Forbidden: You cannot access another farmer's private farm data"
+                detail="Access denied: Cannot access farm health assessment of another farmer"
             )
 
-    # 2. Unauthenticated caller attempting to supply an arbitrary private user_id
-    if authenticated_id is None and requested_user_id is not None:
+    # 2. If client requests a specific user_id but provides no auth headers at all, block access
+    if requested_user_id is not None and authenticated_id is None:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Unauthorized: Authentication required to access private farm health data"
@@ -101,6 +112,7 @@ def resolve_authorized_user_id(
 def get_farm_risk_get(
     user_id: Optional[int] = Query(None, description="Optional user ID for personalized farm health"),
     location: Optional[str] = Query(None, description="Optional location override"),
+    language: Optional[str] = Query("en", description="Selected UI language"),
     x_user_id: Optional[str] = Header(None, alias="X-User-ID"),
     authorization: Optional[str] = Header(None, alias="Authorization"),
     db: Session = Depends(get_db)
@@ -115,7 +127,7 @@ def get_farm_risk_get(
         authorization=authorization,
         db=db
     )
-    return calculate_farm_health_risk(db=db, user_id=authorized_user_id, location=location)
+    return calculate_farm_health_risk(db=db, user_id=authorized_user_id, location=location, language=language)
 
 
 @router.post("/risk", response_model=FarmRiskResponse)
@@ -135,7 +147,7 @@ def get_farm_risk_post(
         authorization=authorization,
         db=db
     )
-    return calculate_farm_health_risk(db=db, user_id=authorized_user_id, location=request.location)
+    return calculate_farm_health_risk(db=db, user_id=authorized_user_id, location=request.location, language=request.language)
 
 
 class InteractiveAdvisoryRequest(BaseModel):

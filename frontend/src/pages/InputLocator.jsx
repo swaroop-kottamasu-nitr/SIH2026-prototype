@@ -37,7 +37,8 @@ export default function InputLocator({ user, onLogout, onUserUpdate }) {
     try {
       const res = await axios.post('/api/v1/inputs/search', {
         category: cat || category,
-        location: loc || location
+        location: loc || location,
+        language: getEffectiveLanguage(user)
       })
       if (res.data) {
         setResults(res.data.results || [])
@@ -52,7 +53,7 @@ export default function InputLocator({ user, onLogout, onUserUpdate }) {
 
   useEffect(() => {
     searchDealers('all', location)
-  }, [])
+  }, [location, i18n.language, user?.language])
 
   const handleAskInputAdvisory = async () => {
     if (aiLoading) return
@@ -62,7 +63,7 @@ export default function InputLocator({ user, onLogout, onUserUpdate }) {
       const prompt = `Where to procure certified quality ${catLabel} in ${location}? What specifications to look for?`
       const res = await axios.post('/api/v1/advisory', {
         question: prompt,
-        language: user?.language || 'en',
+        language: getEffectiveLanguage(user),
         context: {
           category,
           location

@@ -96,7 +96,8 @@ export default function MarketPrices({ user, onLogout, onUserUpdate }) {
     try {
       const res = await axios.post('/api/v1/market/compare', {
         crop: targetCrop,
-        location
+        location,
+        language: getEffectiveLanguage(user)
       })
       if (res.data) {
         setCompareData(res.data)
@@ -112,7 +113,7 @@ export default function MarketPrices({ user, onLogout, onUserUpdate }) {
     if (activeTab === 'compare') {
       fetchComparison(compareCrop)
     }
-  }, [activeTab, compareCrop, location])
+  }, [activeTab, compareCrop, location, i18n.language, user?.language])
 
   const handleAskMarketAdvisory = async () => {
     if (aiLoading) return

@@ -50,7 +50,8 @@
     "inputs": "Certified Seeds & Bio-Inputs",
     "storage": "Cold Chains & Warehouses",
     "labour": "Farm Crews & Daily Labor",
-    "schemes": "Subsidies, KCC & PMFBY"
+    "schemes": "Subsidies, KCC & PMFBY",
+    "chat": "Conversational Farm Assistant"
   },
   "landing": {
     "title": "AI-Powered Agricultural Intelligence",
@@ -745,5 +746,39 @@
     "checkEligibilityBtn": "Evaluate Matches",
     "noSchemes": "No schemes found in this category.",
     "askAiBtn": "Ask AgriDarshak about government scheme application procedures"
+  },
+  "chat": {
+    "title": "AgriDarshak AI Assistant",
+    "subtitle": "Multilingual conversational decision support & voice advisory for Indian farmers",
+    "placeholder": "Ask a question about your crop, soil, weather, irrigation, markets or schemes...",
+    "send": "Send",
+    "reset": "New Chat",
+    "microphone": "Speak your question",
+    "microphone_listening": "Listening... Click to stop",
+    "microphone_stop": "Stop listening",
+    "speaker_listen": "Listen",
+    "speaker_stop": "Stop",
+    "suggested_title": "Suggested Questions",
+    "suggested": {
+      "title": "Suggested Questions",
+      "farm_health": "How is my farm health score doing?",
+      "today": "What are my top priority actions today?",
+      "irrigate": "Should I irrigate my crops today?",
+      "sell": "What are the prevailing mandi prices for my crop?",
+      "schemes": "What government subsidies apply to my farm?",
+      "soil": "How can I improve my soil nutrient balance?",
+      "crops": "What crops grow best in this season?"
+    },
+    "error": {
+      "general": "AgriDarshak advisory service encountered a connection issue. Please check your network or try again.",
+      "permission_denied": "Microphone permission denied. Please allow microphone access in browser settings.",
+      "no_speech": "No speech detected. Please try speaking again.",
+      "recognition_error": "Voice recognition error. Please type your question.",
+      "unsupported_browser": "Voice input is not supported on this browser. You can type your question instead.",
+      "unsupported_language": "Voice input is not available for this language on this browser. Fallback locale activated."
+    },
+    "empty_state": "Start a conversation by typing or speaking your farm query.",
+    "typing_indicator": "AgriDarshak is analyzing...",
+    "welcome_message": "Namaste! I am AgriDarshak Assistant. Ask me about your crop, soil, weather, irrigation, markets or government support."
   }
 }

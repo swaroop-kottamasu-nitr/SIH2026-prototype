@@ -42,7 +42,10 @@ export default function GovernmentSchemes({ user, onLogout, onUserUpdate }) {
     setLoading(true)
     try {
       const res = await axios.get('/api/v1/schemes', {
-        params: { category: cat === 'all' ? undefined : cat }
+        params: { 
+          category: cat === 'all' ? undefined : cat,
+          language: getEffectiveLanguage(user)
+        }
       })
       if (res.data?.schemes) {
         setSchemes(res.data.schemes)
@@ -56,7 +59,7 @@ export default function GovernmentSchemes({ user, onLogout, onUserUpdate }) {
 
   useEffect(() => {
     fetchSchemes('all')
-  }, [])
+  }, [i18n.language, user?.language])
 
   const handleRunQuiz = async (e) => {
     e.preventDefault()
@@ -66,7 +69,8 @@ export default function GovernmentSchemes({ user, onLogout, onUserUpdate }) {
         params: {
           crop: quizCrop,
           location: quizLocation,
-          farm_size: parseFloat(quizFarmSize) || 2.5
+          farm_size: parseFloat(quizFarmSize) || 2.5,
+          language: getEffectiveLanguage(user)
         }
       })
       if (res.data?.eligible_schemes) {
@@ -90,7 +94,7 @@ export default function GovernmentSchemes({ user, onLogout, onUserUpdate }) {
       const prompt = `What central and state government agricultural schemes and subsidy benefits are applicable for ${quizCrop} farmers with ${quizFarmSize} acres in ${quizLocation}?`
       const res = await axios.post('/api/v1/advisory', {
         question: prompt,
-        language: user?.language || 'en',
+        language: getEffectiveLanguage(user),
         context: {
           crop: quizCrop,
           farm_size: quizFarmSize,

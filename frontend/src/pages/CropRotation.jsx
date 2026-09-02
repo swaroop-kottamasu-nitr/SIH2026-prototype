@@ -43,7 +43,8 @@ export default function CropRotation({ user, onLogout, onUserUpdate }) {
         season,
         soil_type: soilType,
         crop_history: historyList,
-        user_id: user?.id || 1
+        user_id: user?.id || 1,
+        language: getEffectiveLanguage(user)
       }, { timeout: 12000 })
 
       if (res.data) {
@@ -58,7 +59,7 @@ export default function CropRotation({ user, onLogout, onUserUpdate }) {
 
   useEffect(() => {
     fetchRotationPlan()
-  }, [])
+  }, [i18n.language, user?.language])
 
   const handleAddHistory = () => {
     if (newHistoryCrop.trim() && !historyList.includes(newHistoryCrop.trim())) {

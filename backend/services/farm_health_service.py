@@ -638,7 +638,8 @@ def generate_recommendations(factors: List[Dict]) -> List[Dict]:
 def calculate_farm_health_risk(
     db: Session,
     user_id: Optional[int] = None,
-    location: Optional[str] = None
+    location: Optional[str] = None,
+    language: Optional[str] = "en"
 ) -> Dict:
     """
     Main entrypoint: Calculates deterministic Farm Health & Distress Risk Assessment.

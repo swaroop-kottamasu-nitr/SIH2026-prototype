@@ -53,7 +53,7 @@ function Dashboard({ user, onLogout, onUserUpdate }) {
       try {
         const userId = user?.id || 1
         const [healthRes, alertsRes, weatherRes, marketRes] = await Promise.allSettled([
-          axios.get(`/api/farm-health/risk?user_id=${userId}&location=${encodedLoc}`, {
+          axios.get(`/api/farm-health/risk?user_id=${userId}&location=${encodedLoc}&language=${effectiveLang}`, {
             headers: { 'X-User-ID': String(userId) }
           }),
           axios.get(`/api/weather/alerts/user/${userId}?unread_only=true&limit=3`),
@@ -105,7 +105,7 @@ function Dashboard({ user, onLogout, onUserUpdate }) {
     }
 
     loadDashboardData()
-  }, [user?.id, user?.location])
+  }, [user?.id, user?.location, user?.language, i18n.language, effectiveLang])
 
   const handleAskAdvisory = async (queryText) => {
     if (advisoryLoading) return
@@ -985,6 +985,9 @@ function Dashboard({ user, onLogout, onUserUpdate }) {
                   <span className={`advisory-source-tag source-${advisorySource}`}>
                     {advisorySource === 'ai' ? '✨ ' + t('advisory.aiAdvisory') : '🌱 ' + t('advisory.smartAdvisory')}
                   </span>
+                  <Link to="/chatbot" className="btn btn-domain-action-subtle" style={{ padding: '4px 12px', fontSize: '11px', fontWeight: 700 }}>
+                    💬 {t('chat.title', { defaultValue: 'Full Assistant' })} →
+                  </Link>
                 </div>
               </div>
 

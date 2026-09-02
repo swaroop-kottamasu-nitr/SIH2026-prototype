@@ -48,7 +48,8 @@ export default function Irrigation({ user, onLogout, onUserUpdate }) {
         growth_stage: growthStage,
         soil_type: soilType,
         location,
-        user_id: user?.id || 1
+        user_id: user?.id || 1,
+        language: getEffectiveLanguage(user)
       }, { timeout: 12000 })
 
       if (res.data?.recommendation) {
@@ -63,7 +64,7 @@ export default function Irrigation({ user, onLogout, onUserUpdate }) {
 
   useEffect(() => {
     fetchIrrigationSchedule()
-  }, [])
+  }, [i18n.language, user?.language])
 
   const handleAskAdvisory = async () => {
     if (aiLoading) return
@@ -72,7 +73,7 @@ export default function Irrigation({ user, onLogout, onUserUpdate }) {
       const prompt = `Irrigation and water management advice for ${crop} at ${growthStage} stage in ${location}`
       const res = await axios.post('/api/v1/advisory', {
         question: prompt,
-        language: user?.language || 'en',
+        language: getEffectiveLanguage(user),
         context: {
           crop,
           location,

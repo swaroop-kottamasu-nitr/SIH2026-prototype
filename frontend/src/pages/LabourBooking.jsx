@@ -44,7 +44,10 @@ export default function LabourBooking({ user, onLogout, onUserUpdate }) {
     setLoading(true)
     try {
       const res = await axios.get('/api/v1/labour/available', {
-        params: { skill: skill === 'all' ? undefined : skill }
+        params: { 
+          skill: skill === 'all' ? undefined : skill,
+          language: getEffectiveLanguage(user)
+        }
       })
       if (res.data?.workers) {
         setWorkers(res.data.workers)
@@ -58,7 +61,7 @@ export default function LabourBooking({ user, onLogout, onUserUpdate }) {
 
   useEffect(() => {
     fetchWorkers('all')
-  }, [])
+  }, [i18n.language, user?.language])
 
   const handleOpenBooking = (worker) => {
     setSelectedWorker(worker)
@@ -77,7 +80,8 @@ export default function LabourBooking({ user, onLogout, onUserUpdate }) {
         duration_days: parseInt(durationDays) || 1,
         task_description: taskDescription,
         location: user?.location || 'Vijayawada, Andhra Pradesh',
-        contact_phone: contactPhone
+        contact_phone: contactPhone,
+        language: getEffectiveLanguage(user)
       })
       if (res.data) {
         setBookingResult(res.data)
@@ -96,7 +100,7 @@ export default function LabourBooking({ user, onLogout, onUserUpdate }) {
       const prompt = `Agricultural labour management and prevailing daily wage rates in ${user?.location || 'Andhra Pradesh'}. What are standard farm operation labor requirements for current season?`
       const res = await axios.post('/api/v1/advisory', {
         question: prompt,
-        language: user?.language || 'en',
+        language: getEffectiveLanguage(user),
         context: {
           location: user?.location
         }

@@ -31,8 +31,9 @@ export default function StorageLocator({ user, onLogout, onUserUpdate }) {
     try {
       const res = await axios.post('/api/v1/storage/search', {
         crop,
-        quantity: parseFloat(quantity) || 50,
-        location
+        quantity: parseFloat(quantity) || 10,
+        location,
+        language: getEffectiveLanguage(user)
       })
       if (res.data) {
         setFacilities(res.data.facilities || [])
@@ -47,7 +48,7 @@ export default function StorageLocator({ user, onLogout, onUserUpdate }) {
 
   useEffect(() => {
     searchStorage()
-  }, [])
+  }, [location, i18n.language, user?.language])
 
   const handleAskStorageAdvisory = async () => {
     if (aiLoading) return
@@ -56,7 +57,7 @@ export default function StorageLocator({ user, onLogout, onUserUpdate }) {
       const prompt = `Post-harvest storage parameters and preservation guidelines for ${quantity} quintals of ${crop} in ${location}. What cold storage conditions or godown precautions are recommended?`
       const res = await axios.post('/api/v1/advisory', {
         question: prompt,
-        language: user?.language || 'en',
+        language: getEffectiveLanguage(user),
         context: {
           crop,
           quantity,
