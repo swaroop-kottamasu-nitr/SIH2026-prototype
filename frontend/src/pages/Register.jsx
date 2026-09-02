@@ -54,7 +54,7 @@ function Register() {
       >
         <div className="auth-card">
           <div className="auth-brand-header">
-            <img src="/agridarshak-logo.jpeg" alt="AgriDarshak" className="auth-logo" />
+            <img src="/sih logo.jpeg" alt="AgriDarshak" className="auth-logo" />
             <span className="auth-brand-name">{t('brand')}</span>
           </div>
           <h1 className="auth-title">{t('auth.createAccountTitle')}</h1>

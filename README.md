@@ -38,11 +38,10 @@ When multiple stresses occur at once (e.g. pre-harvest heavy rainfall combined w
   - Soft Background: `#F7F9F4`
   - Forest Text: `#18322A`
   - Surface/Cards: `#FFFFFF`
-- **Logo Asset**: The supplied AgriDarshak leaf logo is located at:
+- **Logo Asset**: The official AgriDarshak SIH logo is located at:
   ```
-  frontend/public/agridarshak-logo.jpeg
+  frontend/public/sih logo.jpeg
   ```
-  *(To replace or update the logo for official distribution, place the high-resolution logo image at `frontend/public/agridarshak-logo.jpeg`)*.
 
 ---
 

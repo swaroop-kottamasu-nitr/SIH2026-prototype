@@ -17,7 +17,7 @@ function About() {
         <div className="container">
           <div className="header-inner">
             <Link to="/" className="logo" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <img src="/agridarshak-logo.jpeg" alt="AgriDarshak" style={{ width: 28, height: 28, borderRadius: 6, objectFit: 'cover' }} />
+              <img src="/sih logo.jpeg" alt="AgriDarshak" style={{ width: 28, height: 28, borderRadius: 6, objectFit: 'cover' }} />
               <span>{t('brand')}</span>
             </Link>
             <nav className="header-nav">

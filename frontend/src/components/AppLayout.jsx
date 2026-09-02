@@ -58,7 +58,7 @@ function AppLayout({ children, user, onLogout, onUserUpdate }) {
           {/* 1. Brand Logo & Title */}
           <Link to="/dashboard" className="nav-brand" aria-label="AgriDarshak Dashboard">
             <img 
-              src="/agridarshak-logo.jpeg" 
+              src="/sih logo.jpeg" 
               alt="AgriDarshak" 
               className="brand-logo" 
             />

@@ -219,7 +219,7 @@ function Dashboard({ user, onLogout, onUserUpdate }) {
               <div className="farmer-info-col">
                 <div className="farmer-title-row">
                   <div className="dashboard-brand-pill">
-                    <img src="/agridarshak-logo.jpeg" alt="AgriDarshak" className="dashboard-brand-logo" />
+                    <img src="/sih logo.jpeg" alt="AgriDarshak" className="dashboard-brand-logo" />
                     <span>AgriDarshak</span>
                   </div>
                   <h1 className="farmer-name">{user?.name || t('dashboard.farmer')}</h1>
